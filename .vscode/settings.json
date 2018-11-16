@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/f1dc73e5-64f5-43b3-9424-162569adf0ec/resourceGroups/r2bw-alpha/providers/Microsoft.Web/sites/r2bw-alpha",
-    "appService.deploySubpath": ""
-}
