@@ -1,0 +1,9 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/
+
+# App settings (set within Azure)
+appsettings*.json
