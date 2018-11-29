@@ -2,7 +2,34 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+<div class="row">
+    <div class="col-md-4">
+        <h2>Participants</h2>
+        <p>
+            <a class="btn btn-default" asp-area="" asp-controller="Participants" asp-action="Index">
+                Participant List
+            </a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Events</h2>
+        <p>
+            <a class="btn btn-default" asp-area="" asp-controller="Events" asp-action="Index">
+                Event List
+            </a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Attendance</h2>
+        <p>
+            <a class="btn btn-default" asp-area="" asp-controller="Attendance" asp-action="Index">
+                Mark Attendance
+            </a>
+        </p>
+    </div>
+</div>
+
+<!-- <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -91,4 +118,4 @@
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
         </ul>
     </div>
-</div>
+</div> -->
