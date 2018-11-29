@@ -12,5 +12,11 @@ namespace r2bw_alpha.Data
             : base(options)
         {
         }
+
+        public DbSet<Participant> Participants { get; set; }
+
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<Attendance> Attendance { get; set; }
     }
 }
