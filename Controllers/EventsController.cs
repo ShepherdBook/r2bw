@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using r2bw_alpha.Data;
 
 namespace r2bw_alpha.Controllers
 {
+
+    [Authorize]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -85,7 +88,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Time")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Timestamp")] Event @event)
         {
             if (id != @event.Id)
             {
