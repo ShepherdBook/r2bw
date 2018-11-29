@@ -53,7 +53,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Time")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Timestamp")] Event @event)
         {
             if (ModelState.IsValid)
             {

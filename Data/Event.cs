@@ -7,9 +7,7 @@ namespace r2bw_alpha.Data
     {
         public int Id { get; set; }
 
-        public DateTime Date { get; set; }
-
-        public TimeSpan Time { get; set;}
+        public DateTime Timestamp { get; set; }
 
         public ICollection<Attendance> Attendance { get; set; }
     }
