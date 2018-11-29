@@ -6,7 +6,7 @@ namespace r2bw_alpha.Data
     {
         public int Id { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         public ICollection<Attendance> Attendance { get; set; }
     }
