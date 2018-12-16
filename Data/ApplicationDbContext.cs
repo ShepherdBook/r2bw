@@ -18,5 +18,13 @@ namespace r2bw_alpha.Data
         public DbSet<Event> Events { get; set; }
 
         public DbSet<Attendance> Attendance { get; set; }
+
+        public DbSet<Group> Groups { get; set; }
+
+        // Uncommenting this will cause error when applying migrations
+        // protected override void OnModelCreating(ModelBuilder builder)
+        // {
+            
+        // }
     }
 }

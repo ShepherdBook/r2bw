@@ -7,3 +7,4 @@
 
 # App settings (set within Azure)
 appsettings*.json
+sandbox.sql
