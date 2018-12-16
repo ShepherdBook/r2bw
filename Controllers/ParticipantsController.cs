@@ -24,7 +24,7 @@ namespace r2bw_alpha.Controllers
         // GET: Participants
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Participants.ToListAsync());
+            return View(await _context.Participants.Include(p => p.Group).ToListAsync());
         }
 
         // GET: Participants/Details/5
@@ -42,12 +42,15 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(participant);
         }
 
         // GET: Participants/Create
         public IActionResult Create()
         {
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            
             return View();
         }
 
@@ -56,7 +59,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Sex,Size,DateOfBirth,WaiverSignedOn")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +67,8 @@ namespace r2bw_alpha.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(participant);
         }
 
@@ -80,6 +85,9 @@ namespace r2bw_alpha.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+
             return View(participant);
         }
 
@@ -88,7 +96,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Sex,Size,DateOfBirth,WaiverSignedOn")] Participant participant)
         {
             if (id != participant.Id)
             {
@@ -115,6 +123,8 @@ namespace r2bw_alpha.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(participant);
         }
 
@@ -133,6 +143,7 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(participant);
         }
 

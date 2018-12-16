@@ -24,7 +24,7 @@ namespace r2bw_alpha.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            return View(await _context.Events.Include(e => e.Group).ToListAsync());
         }
 
         // GET: Events/Details/5
@@ -42,12 +42,15 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(@event);
         }
 
         // GET: Events/Create
         public IActionResult Create()
         {
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+
             return View();
         }
 
@@ -56,7 +59,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Timestamp")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Timestamp,GroupId")] Event @event)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +67,7 @@ namespace r2bw_alpha.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(@event);
         }
 
@@ -80,6 +84,9 @@ namespace r2bw_alpha.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+
             return View(@event);
         }
 
@@ -88,7 +95,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Timestamp")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Timestamp,GroupId,Name")] Event @event)
         {
             if (id != @event.Id)
             {
@@ -115,6 +122,8 @@ namespace r2bw_alpha.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(@event);
         }
 

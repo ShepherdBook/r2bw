@@ -17,7 +17,13 @@
             @Html.DisplayFor(model => model.Participant.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Event)
+            @Html.DisplayNameFor(model => model.Event.Group.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Event.Group.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.Timestamp)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Event.Timestamp)

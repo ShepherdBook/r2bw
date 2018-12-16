@@ -1,4 +1,4 @@
-@model r2bw_alpha.Data.Attendance
+@model r2bw_alpha.Data.Group
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,24 +6,18 @@
 
 <h2>Edit</h2>
 
-<h4>Attendance</h4>
+<h4>Group</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-
             <div class="form-group">
-                <label asp-for="ParticipantId" class="control-label">Participant</label>
-                <select asp-for="ParticipantId" class ="form-control" asp-items="ViewBag.Participants"></select>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="EventId" class="control-label">Event</label>
-                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.Events"></select>
-            </div>
-            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,25 +9,22 @@ using r2bw_alpha.Data;
 
 namespace r2bw_alpha.Controllers
 {
-
-    [Authorize]
-    public class AttendanceController : Controller
+    public class GroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AttendanceController(ApplicationDbContext context)
+        public GroupsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Attendance
+        // GET: Groups
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Attendance.Include(a => a.Event).ThenInclude(e => e.Group).Include(a => a.Participant);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Groups.ToListAsync());
         }
 
-        // GET: Attendance/Details/5
+        // GET: Groups/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,46 +32,39 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance
-                .Include(a => a.Event)
-                .ThenInclude(e => e.Group)
-                .Include(a => a.Participant)
+            var @group = await _context.Groups
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (attendance == null)
+            if (@group == null)
             {
                 return NotFound();
             }
 
-            return View(attendance);
+            return View(@group);
         }
 
-        // GET: Attendance/Create
+        // GET: Groups/Create
         public IActionResult Create()
         {
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
             return View();
         }
 
-        // POST: Attendance/Create
+        // POST: Groups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ParticipantId,EventId")] Attendance attendance)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Group @group)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(attendance);
+                _context.Add(@group);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
-            return View(attendance);
+            return View(@group);
         }
 
-        // GET: Attendance/Edit/5
+        // GET: Groups/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,24 +72,22 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance.FindAsync(id);
-            if (attendance == null)
+            var @group = await _context.Groups.FindAsync(id);
+            if (@group == null)
             {
                 return NotFound();
             }
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
-            return View(attendance);
+            return View(@group);
         }
 
-        // POST: Attendance/Edit/5
+        // POST: Groups/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ParticipantId,EventId")] Attendance attendance)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Group @group)
         {
-            if (id != attendance.Id)
+            if (id != @group.Id)
             {
                 return NotFound();
             }
@@ -109,12 +96,12 @@ namespace r2bw_alpha.Controllers
             {
                 try
                 {
-                    _context.Update(attendance);
+                    _context.Update(@group);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AttendanceExists(attendance.Id))
+                    if (!GroupExists(@group.Id))
                     {
                         return NotFound();
                     }
@@ -125,12 +112,10 @@ namespace r2bw_alpha.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
-            return View(attendance);
+            return View(@group);
         }
 
-        // GET: Attendance/Delete/5
+        // GET: Groups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,32 +123,30 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
-            var attendance = await _context.Attendance
-                .Include(a => a.Event)
-                .Include(a => a.Participant)
+            var @group = await _context.Groups
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (attendance == null)
+            if (@group == null)
             {
                 return NotFound();
             }
 
-            return View(attendance);
+            return View(@group);
         }
 
-        // POST: Attendance/Delete/5
+        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var attendance = await _context.Attendance.FindAsync(id);
-            _context.Attendance.Remove(attendance);
+            var @group = await _context.Groups.FindAsync(id);
+            _context.Groups.Remove(@group);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AttendanceExists(int id)
+        private bool GroupExists(int id)
         {
-            return _context.Attendance.Any(e => e.Id == id);
+            return _context.Groups.Any(e => e.Id == id);
         }
     }
 }

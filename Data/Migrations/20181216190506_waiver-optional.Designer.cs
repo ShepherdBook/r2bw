@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using r2bw_alpha.Data;
 
 namespace r2bw_alpha.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181216190506_waiver-optional")]
+    partial class waiveroptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,8 +213,6 @@ namespace r2bw_alpha.Data.Migrations
 
                     b.Property<int>("GroupId");
 
-                    b.Property<string>("Name");
-
                     b.Property<DateTime>("Timestamp");
 
                     b.HasKey("Id");
@@ -249,9 +249,11 @@ namespace r2bw_alpha.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Sex");
+                    b.Property<string>("Sex")
+                        .IsRequired();
 
-                    b.Property<string>("Size");
+                    b.Property<string>("Size")
+                        .IsRequired();
 
                     b.Property<DateTimeOffset?>("WaiverSignedOn");
 

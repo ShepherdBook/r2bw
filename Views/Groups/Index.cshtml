@@ -1,10 +1,10 @@
-@model IEnumerable<r2bw_alpha.Data.Event>
+@model IEnumerable<r2bw_alpha.Data.Group>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Events</h2>
+<h2>Groups</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -15,12 +15,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Timestamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group.Name)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -29,12 +23,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Timestamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
