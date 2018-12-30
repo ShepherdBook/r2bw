@@ -11,6 +11,7 @@ namespace r2bw_alpha.Data
         public Participant()
         {
             this.Attendance = new HashSet<Attendance>();
+            this.Purchases = new HashSet<Purchase>();
         }
 
         [Required]
@@ -36,5 +37,7 @@ namespace r2bw_alpha.Data
         public Group Group { get; set; }
 
         public ICollection<Attendance> Attendance { get; set; }
+
+        public ICollection<Purchase> Purchases { get; set; }
     }
 }

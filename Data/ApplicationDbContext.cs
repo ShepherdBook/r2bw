@@ -21,6 +21,8 @@ namespace r2bw_alpha.Data
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<Purchase> Purchases { get; set; }
+
         // Uncommenting this will cause error when applying migrations
         // protected override void OnModelCreating(ModelBuilder builder)
         // {
