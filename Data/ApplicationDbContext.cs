@@ -23,6 +23,8 @@ namespace r2bw_alpha.Data
 
         public DbSet<Purchase> Purchases { get; set; }
 
+        public DbSet<PurchaseType> PurchaseTypes { get; set; }
+
         // Uncommenting this will cause error when applying migrations
         // protected override void OnModelCreating(ModelBuilder builder)
         // {

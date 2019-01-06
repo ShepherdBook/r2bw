@@ -24,7 +24,10 @@ namespace r2bw_alpha.Controllers
         // GET: Purchases
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Purchases.Include(p => p.Participant);
+            var applicationDbContext = _context.Purchases
+                .Include(p => p.Participant)
+                .Include(p => p.Type);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -38,7 +41,9 @@ namespace r2bw_alpha.Controllers
 
             var purchase = await _context.Purchases
                 .Include(p => p.Participant)
+                .Include(p => p.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (purchase == null)
             {
                 return NotFound();
@@ -50,7 +55,9 @@ namespace r2bw_alpha.Controllers
         // GET: Purchases/Create
         public IActionResult Create()
         {
-            ViewData["ParticipantId"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
+
             return View();
         }
 
@@ -59,7 +66,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PurchasedOn,Amount,ParticipantId")] Purchase purchase)
+        public async Task<IActionResult> Create([Bind("Id,PurchasedOn,Amount,ParticipantId,TypeName")] Purchase purchase)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +74,10 @@ namespace r2bw_alpha.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participants, "Id", "Name", purchase.ParticipantId);
+
+            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
+
             return View(purchase);
         }
 
@@ -84,7 +94,10 @@ namespace r2bw_alpha.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participants, "Id", "Name", purchase.ParticipantId);
+
+            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
+
             return View(purchase);
         }
 
@@ -93,7 +106,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PurchasedOn,Amount,ParticipantId")] Purchase purchase)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PurchasedOn,Amount,ParticipantId,TypeName")] Purchase purchase)
         {
             if (id != purchase.Id)
             {
@@ -120,7 +133,10 @@ namespace r2bw_alpha.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participants, "Id", "Name", purchase.ParticipantId);
+            
+            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
+
             return View(purchase);
         }
 
@@ -134,6 +150,7 @@ namespace r2bw_alpha.Controllers
 
             var purchase = await _context.Purchases
                 .Include(p => p.Participant)
+                .Include(p => p.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (purchase == null)
             {
