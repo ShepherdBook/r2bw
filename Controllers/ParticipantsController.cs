@@ -59,7 +59,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Sex,Size,DateOfBirth,WaiverSignedOn")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Id,Name,GroupId,Sex,Size,DateOfBirth")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Sex,Size,DateOfBirth,WaiverSignedOn")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,GroupId,Sex,Size,DateOfBirth")] Participant participant)
         {
             if (id != participant.Id)
             {
@@ -126,6 +126,61 @@ namespace r2bw_alpha.Controllers
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
             return View(participant);
+        }
+
+        // GET: Participants/Waiver/5
+        public async Task<IActionResult> Waiver(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var participant = await _context.Participants.FindAsync(id);
+            if (participant == null)
+            {
+                return NotFound();
+            }
+
+            return View(participant);
+        }
+
+        // POST: Participants/Waiver/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Waiver(int id)
+        {
+            var participantRecord = _context.Participants.Find(id);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (participantRecord != null && participantRecord.WaiverSignedOn == null)
+                    {
+                        participantRecord.WaiverSignedOn = DateTimeOffset.Now;
+                        _context.Update(participantRecord);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ParticipantExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            return View(participantRecord);
         }
 
         // GET: Participants/Delete/5
