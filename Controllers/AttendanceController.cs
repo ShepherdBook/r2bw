@@ -52,7 +52,7 @@ namespace r2bw_alpha.Controllers
         // GET: Attendance/Create
         public IActionResult Create()
         {
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
+            ViewData["Events"] = new SelectList(_context.Events.Include(e => e.Group), "Id", "DisplayName");
             ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
             return View();
         }
