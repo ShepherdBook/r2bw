@@ -4,7 +4,7 @@ namespace r2bw_alpha.Data
 {
     public enum PurchaseTypeName 
     {
-        Shoes, RaceEntry
+        Apparel, RaceEntry, Shoes
     }
 
     public class PurchaseType
