@@ -21,6 +21,9 @@ namespace r2bw_alpha.Data
         [DisplayName("Participant")]
         public string Name { get; set; }
 
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
         [DisplayName("Waiver signed on")]
         [DataType(DataType.Date)]
         public DateTimeOffset? WaiverSignedOn { get; set; }
