@@ -160,7 +160,7 @@ namespace r2bw_alpha.Controllers
                 {
                     if (participantRecord != null && participantRecord.WaiverSignedOn == null)
                     {
-                        participantRecord.WaiverSignedOn = DateTimeOffset.Now;
+                        participantRecord.WaiverSignedOn = DateTime.Now;
                         _context.Update(participantRecord);
                         await _context.SaveChangesAsync();
                     }
