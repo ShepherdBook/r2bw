@@ -22,6 +22,8 @@ namespace r2bw_alpha.Data
         [Required]
         public double Amount { get; set; }
 
+        public string Vendor { get; set; }
+
         [Required]
         public int ParticipantId { get; set; }
 

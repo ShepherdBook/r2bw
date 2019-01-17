@@ -66,7 +66,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PurchasedOn,Amount,ParticipantId,TypeName")] Purchase purchase)
+        public async Task<IActionResult> Create([Bind("Id,PurchasedOn,Amount,Vendor,ParticipantId,TypeName")] Purchase purchase)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +106,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PurchasedOn,Amount,ParticipantId,TypeName")] Purchase purchase)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PurchasedOn,Amount,Vendor,ParticipantId,TypeName")] Purchase purchase)
         {
             if (id != purchase.Id)
             {
