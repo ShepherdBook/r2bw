@@ -96,7 +96,7 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,Name,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
         {
             if (id != participant.Id)
             {
