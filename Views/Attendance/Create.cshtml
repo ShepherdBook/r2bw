@@ -1,4 +1,4 @@
-@model r2bw_alpha.Data.Attendance
+@model r2bw_alpha.Models.AttendanceViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -14,8 +14,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="ParticipantId" class="control-label">Participant</label>
-                <select asp-for="ParticipantId" class ="form-control" asp-items="ViewBag.Participants"></select>
+                <label asp-for="ParticipantIds" class="control-label">Participant</label>
+                <select asp-for="ParticipantIds" class ="form-control" asp-items="ViewBag.Participants"></select>
             </div>
 
             <div class="form-group">

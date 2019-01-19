@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using r2bw_alpha.Data;
+using r2bw_alpha.Models;
 
 namespace r2bw_alpha.Controllers
 {
@@ -62,11 +63,12 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ParticipantId,EventId")] Attendance attendance)
+        public async Task<IActionResult> Create([Bind("ParticipantIds,EventId")] AttendanceViewModel attendance)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(attendance);
+                var recordstoAdd = attendance.ParticipantIds.Select(p => new Attendance { ParticipantId = p, EventId = attendance.EventId });
+                _context.AddRange(recordstoAdd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
