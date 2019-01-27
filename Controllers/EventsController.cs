@@ -36,6 +36,7 @@ namespace r2bw_alpha.Controllers
             }
 
             var @event = await _context.Events
+                .Include(e => e.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
