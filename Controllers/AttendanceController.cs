@@ -55,6 +55,7 @@ namespace r2bw_alpha.Controllers
         {
             ViewData["Events"] = new SelectList(_context.Events.Include(e => e.Group), "Id", "DisplayName");
             ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+
             return View();
         }
 
@@ -63,12 +64,15 @@ namespace r2bw_alpha.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ParticipantIds,EventId")] AttendanceViewModel attendance)
+        public async Task<IActionResult> Create([Bind("ParticipantId,EventId")] Attendance attendance)
         {
             if (ModelState.IsValid)
             {
-                var recordstoAdd = attendance.ParticipantIds.Select(p => new Attendance { ParticipantId = p, EventId = attendance.EventId });
-                _context.AddRange(recordstoAdd);
+                var recordtoAdd = new Attendance(
+                    await _context.Participants.FindAsync(attendance.ParticipantId), 
+                    await _context.Events.FindAsync(attendance.EventId));
+
+                await _context.AddAsync(recordtoAdd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

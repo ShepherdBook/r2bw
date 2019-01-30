@@ -29,6 +29,7 @@ namespace r2bw_alpha.Data
 
         public Group Group { get; set; }
 
+        [DisplayName("Event")]
         public string DisplayName { get { return $"{Timestamp.ToString("g")} - {(Group == null ? "" : Group.Name)} - {Name}"; } }
 
         public ICollection<Attendance> Attendance { get; set; }

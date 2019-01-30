@@ -16,10 +16,7 @@
                 @Html.DisplayNameFor(model => model.Participant)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event.Group.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event.Timestamp)
+                @Html.DisplayNameFor(model => model.Event.DisplayName)
             </th>
             <th></th>
         </tr>
@@ -31,10 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Participant.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Event.Group.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.Timestamp)
+                @Html.DisplayFor(modelItem => item.Event.DisplayName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

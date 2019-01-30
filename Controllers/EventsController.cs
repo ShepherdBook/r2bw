@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using r2bw_alpha.Data;
+using r2bw_alpha.Models;
 
 namespace r2bw_alpha.Controllers
 {
@@ -89,6 +90,83 @@ namespace r2bw_alpha.Controllers
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
 
             return View(@event);
+        }
+
+        public async Task<IActionResult> Attendance(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var thisEvent = await _context.Events.FindAsync(id);
+            if (thisEvent == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EventAttendanceModel();
+
+            model.Event = thisEvent;
+
+            if (thisEvent.Attendance.Count() == 0)
+            {
+                model.Attendees = _context.Participants
+                    .Where(p => p.GroupId == thisEvent.GroupId)
+                    .Select(p => p.Id)
+                    .ToArray();
+            }
+            else 
+            {
+                model.Attendees = thisEvent.Attendance.Select(a => a.ParticipantId).ToArray();
+            }
+
+            model.AllParticipants = _context.Participants.ToList();
+
+            ViewData["AllParticipants"] = new SelectList(model.AllParticipants, "Id", "Name");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Attendance(int id, [Bind("Event,Attendees")] EventAttendanceModel model)
+        {
+            if (id != model.Event.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existing = _context.Attendance.Where(a => model.Attendees.Contains(a.ParticipantId) && a.EventId == model.Event.Id).ToList();
+                    var received = model.Attendees
+                        .Select(pId => new Attendance(
+                            _context.Participants.Find(pId), 
+                            _context.Events.Find(model.Event.Id)))
+                        .ToList();
+
+                    var toAdd = received.Except(existing).ToList();
+
+                    await _context.AddRangeAsync(toAdd);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventExists(model.Event.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Events/Edit/5
