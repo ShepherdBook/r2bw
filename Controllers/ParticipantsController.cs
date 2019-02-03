@@ -35,7 +35,7 @@ namespace r2bw_alpha.Controllers
                 return NotFound();
             }
 
-            var participant = await _context.Participants
+            var participant = await _context.Participants.Include(p => p.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (participant == null)
             {
