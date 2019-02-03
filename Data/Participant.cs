@@ -28,6 +28,8 @@ namespace r2bw_alpha.Data
         [DataType(DataType.Date)]
         public DateTimeOffset? WaiverSignedOn { get; set; }
 
+        [DisplayName("Date of Birth")]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         public string Sex { get; set; }
