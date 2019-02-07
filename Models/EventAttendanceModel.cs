@@ -1,7 +1,7 @@
-namespace r2bw_alpha.Models
+namespace r2bw.Models
 {
     using System.Collections.Generic;
-    using r2bw_alpha.Data;
+    using r2bw.Data;
 
     public class EventAttendanceModel
     {

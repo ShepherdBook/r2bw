@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace r2bw_alpha.Data
+namespace r2bw.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

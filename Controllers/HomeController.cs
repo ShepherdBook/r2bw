@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using r2bw_alpha.Models;
+using r2bw.Models;
 
-namespace r2bw_alpha.Controllers
+namespace r2bw.Controllers
 {
     public class HomeController : Controller
     {

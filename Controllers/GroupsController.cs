@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using r2bw_alpha.Data;
+using r2bw.Data;
 
-namespace r2bw_alpha.Controllers
+namespace r2bw.Controllers
 {
     [Authorize]
     public class GroupsController : Controller

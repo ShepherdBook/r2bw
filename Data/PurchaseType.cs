@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace r2bw_alpha.Data
+namespace r2bw.Data
 {
     public enum PurchaseTypeName 
     {

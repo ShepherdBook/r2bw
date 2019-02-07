@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using r2bw_alpha.Data;
+using r2bw.Data;
 
-namespace r2bw_alpha.Data.Migrations
+namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181109005205_Initial")]

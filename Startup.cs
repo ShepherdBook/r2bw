@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using r2bw_alpha.Data;
+using r2bw.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace r2bw_alpha
+namespace r2bw
 {
     public class Startup
     {

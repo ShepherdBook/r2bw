@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace r2bw_alpha.Data.Migrations
+namespace r2bw.Data.Migrations
 {
     public partial class requiredfields : Migration
     {

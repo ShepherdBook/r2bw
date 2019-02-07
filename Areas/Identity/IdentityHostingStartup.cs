@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using r2bw_alpha.Data;
+using r2bw.Data;
 
-[assembly: HostingStartup(typeof(r2bw_alpha.Areas.Identity.IdentityHostingStartup))]
-namespace r2bw_alpha.Areas.Identity
+[assembly: HostingStartup(typeof(r2bw.Areas.Identity.IdentityHostingStartup))]
+namespace r2bw.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

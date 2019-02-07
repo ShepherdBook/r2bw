@@ -1,4 +1,4 @@
-namespace r2bw_alpha.Data
+namespace r2bw.Data
 {
     using System;
     using System.Collections.Generic;

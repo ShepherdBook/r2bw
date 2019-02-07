@@ -1,6 +1,6 @@
 using System;
 
-namespace r2bw_alpha.Models
+namespace r2bw.Models
 {
     public class ErrorViewModel
     {
