@@ -59,7 +59,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,Name,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
         {
             if (id != participant.Id)
             {

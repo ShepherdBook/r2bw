@@ -17,9 +17,15 @@ namespace r2bw.Data
         [Required]
         public int Id { get; set; }
 
+        public string Name { get { return $"{FirstName} {LastName}"; } }
+
         [Required]
-        [DisplayName("Participant")]
-        public string Name { get; set; }
+        [DisplayName("First name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DisplayName("Last name")]
+        public string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
