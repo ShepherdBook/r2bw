@@ -6,13 +6,11 @@
 
 <h2>Attendance</h2>
 
-<h4>Event</h4>
+<h3>Event</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @Html.DisplayFor(modelItem => modelItem.Event.Name)
-        @Html.DisplayFor(modelItem => modelItem.Event.Timestamp)
-        @Html.DisplayFor(modelItem => modelItem.Event.Group.Name)
+        <h4>@Html.DisplayFor(modelItem => modelItem.Event.DisplayName)</h4>
     </div>
 </div>
 <div class="row">
