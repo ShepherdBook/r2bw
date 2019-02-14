@@ -107,6 +107,8 @@ namespace r2bw.Controllers
 
             var model = new EventAttendanceModel();
 
+            thisEvent.Attendance = _context.Attendance.Where(a => a.EventId == thisEvent.Id).ToList();
+
             model.Event = thisEvent;
 
             if (thisEvent.Attendance.Count() == 0)
