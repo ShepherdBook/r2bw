@@ -41,7 +41,7 @@
 
             <div class="form-group">
                 <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" />
+                <select asp-for="Sex" class ="form-control" asp-items="ViewBag.ShirtSexes"></select>
                 <span asp-validation-for="Sex" class="text-danger"></span>
             </div>
 
