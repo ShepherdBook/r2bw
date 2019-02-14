@@ -9,6 +9,10 @@ namespace r2bw.Models
 
         public List<Participant> AllParticipants { get; set; }
 
+        public List<Participant> Present { get; set; }
+
+        public int PresentCount { get { return Present.Count; } }
+
         public int[] Attendees { get; set; }
     }
 }

@@ -92,6 +92,7 @@ namespace r2bw.Controllers
             return View(@event);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Attendance(int? id)
         {
             if (id == null)
@@ -126,6 +127,16 @@ namespace r2bw.Controllers
             model.AllParticipants = _context.Participants.ToList();
 
             ViewData["AllParticipants"] = new SelectList(model.AllParticipants, "Id", "Name");
+
+            var present = _context.Attendance.Where(a => a.EventId == thisEvent.Id).Select(a => a.ParticipantId).ToList();
+
+            model.Present = _context.Participants
+                .Where(p => present.Contains(p.Id))
+                .Include(p => p.Group)
+                .OrderBy(p => p.Group.Name)
+                .OrderBy(p => p.LastName)
+                .OrderBy(p => p.FirstName)
+                .ToList();
 
             return View(model);
         }

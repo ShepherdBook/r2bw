@@ -5,8 +5,6 @@
 }
 
 <h2>Attendance</h2>
-
-<h3>Event</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +12,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Attendance">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Event.Id" />
@@ -26,6 +24,35 @@
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
+    </div>
+    <div class="col-md-6">
+        <table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Group
+            </th>
+            <th>
+                Total: @Html.DisplayFor(model => model.PresentCount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Present) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
     </div>
 </div>
 
