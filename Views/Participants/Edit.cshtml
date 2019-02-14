@@ -41,13 +41,13 @@
 
             <div class="form-group">
                 <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" />
+                <select asp-for="Sex" class ="form-control" asp-items="ViewBag.ShirtSexes"></select>
                 <span asp-validation-for="Sex" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
+                <select asp-for="Size" class ="form-control" asp-items="ViewBag.ShirtSizes"></select>
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
 

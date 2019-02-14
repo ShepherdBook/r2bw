@@ -15,10 +15,18 @@ namespace r2bw.Controllers
     public class ParticipantsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SelectList shirtSizes;
+        private readonly SelectList shirtSexes;
 
         public ParticipantsController(ApplicationDbContext context)
         {
             _context = context;
+
+            List<string> sizes = new List<string> {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
+            shirtSizes = new SelectList(sizes);
+
+            List<string> sexes = new List<string> {"Male", "Female", "Other"};
+            shirtSexes = new SelectList(sexes);
         }
 
         // GET: Participants
@@ -43,6 +51,9 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
             return View(participant);
         }
 
@@ -50,6 +61,8 @@ namespace r2bw.Controllers
         public IActionResult Create()
         {
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
             
             return View();
         }
@@ -69,6 +82,9 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
             return View(participant);
         }
 
@@ -87,6 +103,8 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
 
             return View(participant);
         }
@@ -125,6 +143,9 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
             return View(participant);
         }
 
@@ -180,6 +201,9 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
             return View(participantRecord);
         }
 
@@ -199,6 +223,9 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
             return View(participant);
         }
 
