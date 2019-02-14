@@ -23,7 +23,6 @@ namespace r2bw.Data
         [DisplayName("First name")]
         public string FirstName { get; set; }
 
-        [Required]
         [DisplayName("Last name")]
         public string LastName { get; set; }
 
@@ -36,7 +35,7 @@ namespace r2bw.Data
 
         [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public string Sex { get; set; }
 

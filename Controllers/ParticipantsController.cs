@@ -22,10 +22,10 @@ namespace r2bw.Controllers
         {
             _context = context;
 
-            List<string> sizes = new List<string> {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
+            List<string> sizes = new List<string> {"", "XS", "S", "M", "L", "XL", "XXL", "XXXL"};
             shirtSizes = new SelectList(sizes);
 
-            List<string> sexes = new List<string> {"Male", "Female", "Other"};
+            List<string> sexes = new List<string> {"", "Male", "Female", "Other"};
             shirtSexes = new SelectList(sexes);
         }
 
