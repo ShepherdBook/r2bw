@@ -5,6 +5,12 @@ namespace r2bw.Models
 
     public class EventAttendanceModel
     {
+        public EventAttendanceModel()
+        {
+            AllParticipants = new List<Participant>();
+            Present = new List<Participant>();
+        }
+
         public Event Event { get; set; }
 
         public List<Participant> AllParticipants { get; set; }
