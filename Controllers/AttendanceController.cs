@@ -25,8 +25,12 @@ namespace r2bw.Controllers
         // GET: Attendance
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Attendance.Include(a => a.Event).ThenInclude(e => e.Group).Include(a => a.Participant);
-            return View(await applicationDbContext.ToListAsync());
+            var events = _context.Events
+                .Include(e => e.Attendance)
+                .Include(e => e.Group)
+                .OrderByDescending(e => e.Timestamp);
+
+            return View(await events.ToListAsync());
         }
 
         // GET: Attendance/Details/5

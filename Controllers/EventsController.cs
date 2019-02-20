@@ -25,7 +25,10 @@ namespace r2bw.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.Include(e => e.Group).ToListAsync());
+            return View(await _context.Events
+                .Include(e => e.Group)
+                .OrderByDescending(e => e.Timestamp)
+                .ToListAsync());
         }
 
         // GET: Events/Details/5

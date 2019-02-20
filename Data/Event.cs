@@ -33,5 +33,7 @@ namespace r2bw.Data
         public string DisplayName { get { return $"{Timestamp.ToString("g")} - {(Group == null ? "" : Group.Name)} - {Name}"; } }
 
         public ICollection<Attendance> Attendance { get; set; }
+
+        public int Headcount { get { return this.Attendance.Count; } }
     }
 }
