@@ -129,6 +129,8 @@ namespace r2bw.Controllers
 
             model.AllParticipants = _context.Participants
                 .Include(p => p.Group)
+                .OrderBy(p => p.FirstName)
+                .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
                 .ToList();
 
@@ -139,9 +141,9 @@ namespace r2bw.Controllers
             model.Present = _context.Participants
                 .Where(p => present.Contains(p.Id))
                 .Include(p => p.Group)
-                .OrderBy(p => p.Group.Name)
-                .OrderBy(p => p.LastName)
                 .OrderBy(p => p.FirstName)
+                .OrderBy(p => p.LastName)
+                .OrderBy(p => p.Group.Name)
                 .ToList();
 
             return View(model);
