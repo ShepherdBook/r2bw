@@ -32,7 +32,12 @@ namespace r2bw.Controllers
         // GET: Participants
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Participants.Include(p => p.Group).ToListAsync());
+            return View(await _context.Participants
+                .Include(p => p.Group)
+                .OrderBy(p => p.FirstName)
+                .OrderBy(p => p.LastName)
+                .OrderBy(p => p.Group.Name)
+                .ToListAsync());
         }
 
         // GET: Participants/Details/5
