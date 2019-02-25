@@ -127,7 +127,10 @@ namespace r2bw.Controllers
                 model.Attendees = thisEvent.Attendance.Select(a => a.ParticipantId).ToArray();
             }
 
-            model.AllParticipants = _context.Participants.ToList();
+            model.AllParticipants = _context.Participants
+                .Include(p => p.Group)
+                .OrderBy(p => p.Group.Name)
+                .ToList();
 
             ViewData["AllParticipants"] = new SelectList(model.AllParticipants, "Id", "Name");
 
