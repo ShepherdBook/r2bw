@@ -2,6 +2,8 @@
 
 This is the attendance tracking app for [Running2BWell](https://www.running2bwell.org/).
 
+Currently in closed beta.
+
 Scaffolded with `dotnet new webapp`, hosted on Azure.  
 
 Future plans:
