@@ -72,6 +72,46 @@ namespace r2bw.Controllers
             return View();
         }
 
+        // GET: Participants/Register
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+            
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
+
+        // POST: Participants/Register
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        {
+            if (ModelState.IsValid)
+            {
+                participant.StatusId = (int)ParticipantStatusValue.Pending;
+                _context.Add(participant);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ThankYou));
+            }
+
+            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["ShirtSizes"] = this.shirtSizes;
+            ViewData["ShirtSexes"] = this.shirtSexes;
+
+            return RedirectToAction(nameof(ThankYou));
+        }
+
         // POST: Participants/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.

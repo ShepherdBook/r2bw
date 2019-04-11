@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using r2bw.Data;
 
 namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190405002055_ParticipantStatusOptional")]
+    partial class ParticipantStatusOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +259,7 @@ namespace r2bw.Data.Migrations
 
                     b.Property<string>("Size");
 
-                    b.Property<int>("StatusId");
+                    b.Property<int?>("StatusId");
 
                     b.Property<DateTimeOffset?>("WaiverSignedOn");
 
@@ -394,8 +396,7 @@ namespace r2bw.Data.Migrations
 
                     b.HasOne("r2bw.Data.ParticipantStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("r2bw.Data.Purchase", b =>
