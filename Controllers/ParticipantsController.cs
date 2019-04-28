@@ -144,6 +144,7 @@ namespace r2bw.Controllers
             if (ModelState.IsValid)
             {
                 participant.StatusId = (int)ParticipantStatusValue.Pending;
+                participant.WaiverSignedOn = DateTimeOffset.Now;
                 _context.Add(participant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ThankYou));
@@ -165,6 +166,7 @@ namespace r2bw.Controllers
         {
             if (ModelState.IsValid)
             {
+                participant.StatusId = (int)ParticipantStatusValue.Active;
                 _context.Add(participant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
