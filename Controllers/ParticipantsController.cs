@@ -40,6 +40,50 @@ namespace r2bw.Controllers
                 .ToListAsync());
         }
 
+        // GET: Pending sign ups
+        public async Task<IActionResult> Pending()
+        {
+            return View(await _context.Participants
+                .Include(p => p.Group)
+                .OrderBy(p => p.FirstName)
+                .OrderBy(p => p.LastName)
+                .OrderBy(p => p.Group.Name)
+                .Where(p => p.StatusId == (int)ParticipantStatusValue.Pending)
+                .ToListAsync());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve([FromForm] int participantId)
+        {
+            var participantRecord = _context.Participants.Find(participantId);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (participantRecord != null)
+                    {
+                        participantRecord.StatusId = (int)ParticipantStatusValue.Active;
+                        _context.Update(participantRecord);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ParticipantExists(participantId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction(nameof(Pending));
+        }
+
         // GET: Participants/Details/5
         public async Task<IActionResult> Details(int? id)
         {
