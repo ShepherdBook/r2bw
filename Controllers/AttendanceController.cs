@@ -81,7 +81,9 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(
+                _context.Participants.Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                , "Id", "Name");
             return View(attendance);
         }
 
@@ -99,7 +101,9 @@ namespace r2bw.Controllers
                 return NotFound();
             }
             ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(
+                _context.Participants.Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                , "Id", "Name");
             return View(attendance);
         }
 
@@ -136,7 +140,9 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(
+                _context.Participants.Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+            , "Id", "Name");
             return View(attendance);
         }
 

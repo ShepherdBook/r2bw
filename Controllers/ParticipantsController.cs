@@ -37,6 +37,7 @@ namespace r2bw.Controllers
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
+                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
                 .ToListAsync());
         }
 
