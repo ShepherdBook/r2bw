@@ -33,6 +33,22 @@
             @Html.DisplayFor(model => model.Group.Name)
         </dd>
     </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Headcount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Headcount)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ManualHeadcount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManualHeadcount)
+        </dd>
+    </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
