@@ -25,6 +25,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Purchases
+                .Where(p => p.Active)
                 .Include(p => p.Participant)
                 .Include(p => p.Type);
 
@@ -40,6 +41,7 @@ namespace r2bw.Controllers
             }
 
             var purchase = await _context.Purchases
+                .Where(p => p.Active)
                 .Include(p => p.Participant)
                 .Include(p => p.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -55,7 +57,7 @@ namespace r2bw.Controllers
         // GET: Purchases/Create
         public IActionResult Create()
         {
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(_context.Participants.Where(p => p.Active), "Id", "Name");
             ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
 
             return View();
@@ -70,12 +72,13 @@ namespace r2bw.Controllers
         {
             if (ModelState.IsValid)
             {
+                purchase.Active  = true;
                 _context.Add(purchase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(_context.Participants.Where(p => p.Active), "Id", "Name");
             ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
 
             return View(purchase);
@@ -95,7 +98,7 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(_context.Participants.Where(p => p.Active), "Id", "Name");
             ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
 
             return View(purchase);
@@ -134,7 +137,7 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
             
-            ViewData["Participants"] = new SelectList(_context.Participants, "Id", "Name");
+            ViewData["Participants"] = new SelectList(_context.Participants.Where(p => p.Active), "Id", "Name");
             ViewData["PurchaseTypes"] = new SelectList(_context.PurchaseTypes, "Name", "Name");
 
             return View(purchase);
@@ -149,6 +152,7 @@ namespace r2bw.Controllers
             }
 
             var purchase = await _context.Purchases
+                .Where(p => p.Active)
                 .Include(p => p.Participant)
                 .Include(p => p.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -166,7 +170,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var purchase = await _context.Purchases.FindAsync(id);
-            _context.Purchases.Remove(purchase);
+            purchase.Active = false;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

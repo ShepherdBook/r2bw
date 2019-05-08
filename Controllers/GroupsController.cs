@@ -23,7 +23,7 @@ namespace r2bw.Controllers
         // GET: Groups
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Groups.ToListAsync());
+            return View(await _context.Groups.Where(g => g.Active).ToListAsync());
         }
 
         // GET: Groups/Details/5
@@ -35,6 +35,7 @@ namespace r2bw.Controllers
             }
 
             var @group = await _context.Groups
+                .Where(g => g.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@group == null)
             {
@@ -59,6 +60,7 @@ namespace r2bw.Controllers
         {
             if (ModelState.IsValid)
             {
+                @group.Active = true;
                 _context.Add(@group);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -126,7 +128,9 @@ namespace r2bw.Controllers
             }
 
             var @group = await _context.Groups
+                .Where(g => g.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (@group == null)
             {
                 return NotFound();
@@ -141,7 +145,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var @group = await _context.Groups.FindAsync(id);
-            _context.Groups.Remove(@group);
+            @group.Active = false;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

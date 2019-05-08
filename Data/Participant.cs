@@ -41,6 +41,8 @@ namespace r2bw.Data
 
         public string Size { get; set; }
 
+        public bool Active { get; set; }
+
         [Required]
         public int GroupId { get; set; }
 

@@ -24,6 +24,8 @@ namespace r2bw.Data
 
         public string Vendor { get; set; }
 
+        public bool Active { get; set; }
+
         [Required]
         public int ParticipantId { get; set; }
 

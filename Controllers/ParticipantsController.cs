@@ -33,6 +33,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Participants
+                .Where(p => p.Active)
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
@@ -45,6 +46,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> Pending()
         {
             return View(await _context.Participants
+                .Where(p => p.Active)
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
@@ -93,14 +95,14 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var participant = await _context.Participants.Include(p => p.Group)
+            var participant = await _context.Participants.Where(p => p.Active).Include(p => p.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (participant == null)
             {
                 return NotFound();
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -110,7 +112,7 @@ namespace r2bw.Controllers
         // GET: Participants/Create
         public IActionResult Create()
         {
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
             
@@ -121,7 +123,7 @@ namespace r2bw.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
             
@@ -146,12 +148,13 @@ namespace r2bw.Controllers
             {
                 participant.StatusId = (int)ParticipantStatusValue.Pending;
                 participant.WaiverSignedOn = DateTimeOffset.Now;
+                participant.Active = true;
                 _context.Add(participant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ThankYou));
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -168,12 +171,13 @@ namespace r2bw.Controllers
             if (ModelState.IsValid)
             {
                 participant.StatusId = (int)ParticipantStatusValue.Active;
+                participant.Active = true;
                 _context.Add(participant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -194,7 +198,7 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -234,7 +238,7 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -292,7 +296,7 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -308,13 +312,15 @@ namespace r2bw.Controllers
             }
 
             var participant = await _context.Participants
+                .Where(p => p.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (participant == null)
             {
                 return NotFound();
             }
 
-            ViewData["Groups"] = new SelectList(_context.Groups, "Id", "Name");
+            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
@@ -327,7 +333,7 @@ namespace r2bw.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var participant = await _context.Participants.FindAsync(id);
-            _context.Participants.Remove(participant);
+            participant.Active = false;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

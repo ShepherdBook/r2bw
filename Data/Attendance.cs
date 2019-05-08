@@ -21,6 +21,8 @@ namespace r2bw.Data
         public int EventId { get; set; }
         public Event Event { get; set; }
 
+        public bool Active { get; set; }
+
         // override object.Equals
         public override bool Equals(object obj)
         {
