@@ -1,6 +1,7 @@
 namespace r2bw.Data
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -39,6 +40,6 @@ namespace r2bw.Data
 
         public ICollection<Attendance> Attendance { get; set; }
 
-        public int Headcount { get { return this.Attendance.Count; } }
+        public int Headcount { get { return this.Attendance.Where(a => a.Active).Count(); } }
     }
 }
