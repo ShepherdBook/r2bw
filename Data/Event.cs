@@ -18,6 +18,9 @@ namespace r2bw.Data
         
         public string Name { get; set; }
 
+        [DisplayName("Manual Headcount")]
+        public int? ManualHeadcount { get; set; }
+
         [Required]
         [DisplayName("Date and Time")]
         [DataType(DataType.DateTime)]
