@@ -27,6 +27,7 @@ namespace r2bw.Controllers
         {
             return View(await _context.Events
                 .Include(e => e.Group)
+                .Include(e => e.Attendance)
                 .OrderByDescending(e => e.Timestamp)
                 .ToListAsync());
         }
