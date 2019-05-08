@@ -27,6 +27,8 @@ namespace r2bw.Data
         [DisplayFormat(DataFormatString = "{0:f}")]
         public DateTime Timestamp { get; set; }
 
+        public bool Active { get; set; }
+
         [Required]
         public int GroupId { get; set; }
 

@@ -19,6 +19,8 @@ namespace r2bw.Data
         [DisplayName("Group")]
         public string Name { get; set; }
 
+        public bool Active { get; set; }
+
         public ICollection<Participant> Participants { get; set; }
 
         public ICollection<Event> Events { get; set; }
