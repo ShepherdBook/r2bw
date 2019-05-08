@@ -334,7 +334,13 @@ namespace r2bw.Controllers
         {
             var participant = await _context.Participants.FindAsync(id);
             participant.Active = false;
+
+            var attendance = _context.Attendance.Where(a => a.ParticipantId == participant.Id);
+            await attendance.ForEachAsync(a => a.Active = false);
+            _context.UpdateRange(attendance);
+            
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
