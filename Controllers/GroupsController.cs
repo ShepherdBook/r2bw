@@ -89,7 +89,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Group @group)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name, Active")] Group @group)
         {
             if (id != @group.Id)
             {
