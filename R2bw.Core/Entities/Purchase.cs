@@ -1,4 +1,4 @@
-namespace r2bw.Data
+namespace R2bw.Core.Entities
 {
     using System;
     using System.ComponentModel;
