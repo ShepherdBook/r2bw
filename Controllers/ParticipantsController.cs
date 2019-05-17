@@ -68,6 +68,8 @@ namespace r2bw.Controllers
                     if (participantRecord != null)
                     {
                         participantRecord.StatusId = (int)ParticipantStatusValue.Active;
+                        participantRecord.Active = true;
+
                         _context.Update(participantRecord);
                         await _context.SaveChangesAsync();
                     }
@@ -210,7 +212,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] Participant participant)
         {
             if (id != participant.Id)
             {
@@ -278,6 +280,8 @@ namespace r2bw.Controllers
                     if (participantRecord != null && participantRecord.WaiverSignedOn == null)
                     {
                         participantRecord.WaiverSignedOn = DateTime.Now;
+                        participantRecord.Active = true;
+                        
                         _context.Update(participantRecord);
                         await _context.SaveChangesAsync();
                     }
