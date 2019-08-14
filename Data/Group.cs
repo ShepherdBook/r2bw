@@ -8,8 +8,8 @@ namespace r2bw.Data
     {
         public Group()
         {
-            this.Participants = new HashSet<Participant>();
-            this.Events = new HashSet<Event>();
+            this.Users = new HashSet<User>();
+            this.Meetings = new HashSet<Meeting>();
         }
 
         [Required]
@@ -21,8 +21,8 @@ namespace r2bw.Data
 
         public bool Active { get; set; }
 
-        public ICollection<Participant> Participants { get; set; }
+        public ICollection<User> Users { get; set; }
 
-        public ICollection<Event> Events { get; set; }
+        public ICollection<Meeting> Meetings { get; set; }
     }
 }

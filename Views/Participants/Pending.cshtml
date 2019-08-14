@@ -1,4 +1,4 @@
-@model IEnumerable<r2bw.Data.Participant>
+@model IEnumerable<r2bw.Data.User>
 
 @{
     ViewData["Title"] = "Pending Sign ups";
@@ -34,7 +34,7 @@
                     @Html.DisplayFor(modelItem => item.WaiverSignedOn)
                 </td>
                 <td>
-                    @using (Html.BeginForm("Approve", "Participants", FormMethod.Post)){
+                    @using (Html.BeginForm("Approve", "Users", FormMethod.Post)){
                         <input type="hidden" asp-for="@item.Id" name="participantId" />
                         <input type="submit" value="Approve" class="btn btn-default" />
                     } 

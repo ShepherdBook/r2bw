@@ -22,7 +22,7 @@ namespace r2bw.Controllers
         // GET: Attendance
         public async Task<IActionResult> Index()
         {
-            var events = _context.Events
+            var events = _context.Meetings
                 .Include(e => e.Attendance)
                 .Include(e => e.Group)
                 .Where(e => e.Active)
@@ -40,9 +40,9 @@ namespace r2bw.Controllers
             }
 
             var attendance = await _context.Attendance
-                .Include(a => a.Event)
+                .Include(a => a.Meeting)
                 .ThenInclude(e => e.Group)
-                .Include(a => a.Participant)
+                .Include(a => a.User)
                 .Where(a => a.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -57,8 +57,8 @@ namespace r2bw.Controllers
         // GET: Attendance/Create
         public IActionResult Create()
         {
-            var events = _context.Events.Where(e => e.Active).Include(e => e.Group);
-            var participants = _context.Participants.Where(p => p.Active);
+            var events = _context.Meetings.Where(e => e.Active).Include(e => e.Group);
+            var participants = _context.Users.Where(p => p.Active);
 
             ViewData["Events"] = new SelectList(events, "Id", "DisplayName");
             ViewData["Participants"] = new SelectList(participants, "Id", "Name");
@@ -76,19 +76,20 @@ namespace r2bw.Controllers
             if (ModelState.IsValid)
             {
                 var recordtoAdd = new Attendance(
-                    await _context.Participants.FindAsync(attendance.ParticipantId), 
-                    await _context.Events.FindAsync(attendance.EventId)
-                );
-
-                recordtoAdd.Active = true;
+                    await _context.Users.FindAsync(attendance.UserId),
+                    await _context.Meetings.FindAsync(attendance.MeetingId)
+                )
+                {
+                    Active = true
+                };
 
                 await _context.AddAsync(recordtoAdd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Events"] = new SelectList(_context.Events, "Id", "Timestamp");
+            ViewData["Events"] = new SelectList(_context.Meetings, "Id", "Timestamp");
             ViewData["Participants"] = new SelectList(
-                _context.Participants.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
                 , "Id", "Name");
             return View(attendance);
         }
@@ -108,10 +109,10 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            ViewData["Events"] = new SelectList(_context.Events.Where(e => e.Active), "Id", "Timestamp");
+            ViewData["Events"] = new SelectList(_context.Meetings.Where(e => e.Active), "Id", "Timestamp");
 
             ViewData["Participants"] = new SelectList(
-                _context.Participants.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
                 , "Id", "Name");
 
             return View(attendance);
@@ -150,10 +151,10 @@ namespace r2bw.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Events"] = new SelectList(_context.Events.Where(e => e.Active), "Id", "Timestamp");
+            ViewData["Events"] = new SelectList(_context.Meetings.Where(e => e.Active), "Id", "Timestamp");
 
             ViewData["Participants"] = new SelectList(
-                _context.Participants.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
                 , "Id", "Name");
 
             return View(attendance);
@@ -168,8 +169,8 @@ namespace r2bw.Controllers
             }
 
             var attendance = await _context.Attendance
-                .Include(a => a.Event)
-                .Include(a => a.Participant)
+                .Include(a => a.Meeting)
+                .Include(a => a.User)
                 .Where(a => a.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
 

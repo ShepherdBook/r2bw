@@ -32,7 +32,7 @@ namespace r2bw.Controllers
         // GET: Participants
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Participants
+            return View(await _context.Users
                 .Where(p => p.Active)
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
@@ -45,7 +45,7 @@ namespace r2bw.Controllers
         // GET: Pending sign ups
         public async Task<IActionResult> Pending()
         {
-            return View(await _context.Participants
+            return View(await _context.Users
                 .Where(p => p.Active)
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
@@ -57,9 +57,9 @@ namespace r2bw.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve([FromForm] int participantId)
+        public async Task<IActionResult> Approve([FromForm] string participantId)
         {
-            var participantRecord = _context.Participants.Find(participantId);
+            var participantRecord = _context.Users.Find(participantId);
 
             if (ModelState.IsValid)
             {
@@ -90,14 +90,14 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
             }
 
-            var participant = await _context.Participants.Where(p => p.Active).Include(p => p.Group)
+            var participant = await _context.Users.Where(p => p.Active).Include(p => p.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (participant == null)
             {
@@ -144,7 +144,7 @@ namespace r2bw.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Register([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User participant)
         {
             if (ModelState.IsValid)
             {
@@ -168,7 +168,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User participant)
         {
             if (ModelState.IsValid)
             {
@@ -187,14 +187,14 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
             }
 
-            var participant = await _context.Participants.FindAsync(id);
+            var participant = await _context.Users.FindAsync(id);
             if (participant == null)
             {
                 return NotFound();
@@ -212,7 +212,7 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] Participant participant)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] User participant)
         {
             if (id != participant.Id)
             {
@@ -255,7 +255,7 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var participant = await _context.Participants.FindAsync(id);
+            var participant = await _context.Users.FindAsync(id);
             if (participant == null)
             {
                 return NotFound();
@@ -269,9 +269,9 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Waiver(int id)
+        public async Task<IActionResult> Waiver(string id)
         {
-            var participantRecord = _context.Participants.Find(id);
+            var participantRecord = _context.Users.Find(id);
 
             if (ModelState.IsValid)
             {
@@ -308,14 +308,14 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var participant = await _context.Participants
+            var participant = await _context.Users
                 .Where(p => p.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -334,12 +334,12 @@ namespace r2bw.Controllers
         // POST: Participants/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var participant = await _context.Participants.FindAsync(id);
+            var participant = await _context.Users.FindAsync(id);
             participant.Active = false;
 
-            var attendance = _context.Attendance.Where(a => a.ParticipantId == participant.Id);
+            var attendance = _context.Attendance.Where(a => a.UserId == participant.Id);
             await attendance.ForEachAsync(a => a.Active = false);
             _context.UpdateRange(attendance);
             
@@ -348,9 +348,9 @@ namespace r2bw.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParticipantExists(int id)
+        private bool ParticipantExists(string id)
         {
-            return _context.Participants.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

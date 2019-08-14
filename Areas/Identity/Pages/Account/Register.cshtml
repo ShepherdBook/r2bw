@@ -7,10 +7,6 @@
 <h2>@ViewData["Title"]</h2>
 
 <div class="row">
-    <h1>Registration is disabled</h1>
-</div>
-
-<!-- <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
@@ -20,6 +16,11 @@
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
@@ -34,7 +35,7 @@
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
-</div> -->
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
