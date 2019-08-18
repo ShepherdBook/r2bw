@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190210165343_split-name")]
-    partial class splitname
+    partial class SplitName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

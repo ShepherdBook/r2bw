@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class usergroupoptional : Migration
+    public partial class UserGroupOptional : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

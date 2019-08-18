@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190117011657_participant-email")]
-    partial class participantemail
+    partial class ParticipantEmail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

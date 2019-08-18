@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class participantdoboptional : Migration
+    public partial class PparticipantDobOptional : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

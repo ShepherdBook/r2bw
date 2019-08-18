@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class participantfirstnameonly : Migration
+    public partial class ParticipantFirstNameOnly : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

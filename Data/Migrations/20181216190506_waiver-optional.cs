@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class waiveroptional : Migration
+    public partial class WaiverOptional : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

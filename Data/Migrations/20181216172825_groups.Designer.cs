@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181216172825_groups")]
-    partial class groups
+    partial class Groups
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

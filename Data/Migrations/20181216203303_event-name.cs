@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class eventname : Migration
+    public partial class EventName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

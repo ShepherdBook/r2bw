@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190814165816_user-group-optional")]
-    partial class usergroupoptional
+    partial class UserGroupOptional
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

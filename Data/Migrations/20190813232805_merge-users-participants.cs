@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class mergeusersparticipants : Migration
+    public partial class MergeUsersParticipants : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
