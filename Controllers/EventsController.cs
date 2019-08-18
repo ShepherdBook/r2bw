@@ -142,7 +142,7 @@ namespace r2bw.Controllers
                 .OrderBy(p => p.Group.Name)
                 .ToList();
 
-            ViewData["AllParticipants"] = new SelectList(model.AllParticipants, "Id", "Name");
+            ViewData["AllUsers"] = new SelectList(model.AllParticipants, "Id", "Name");
 
             var present = _context.Attendance.Where(a => a.Active).Where(a => a.MeetingId == thisMeeting.Id).Select(a => a.UserId).ToList();
 
@@ -161,7 +161,7 @@ namespace r2bw.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Attendance(int id, [Bind("Event,Attendees")] MeetingAttendanceModel model)
+        public async Task<IActionResult> Attendance(int id, [Bind("Meeting,Attendees")] MeetingAttendanceModel model)
         {
             if (id != model.Meeting.Id)
             {
