@@ -89,7 +89,7 @@ namespace r2bw.Controllers
             }
             ViewData["Events"] = new SelectList(_context.Meetings, "Id", "Timestamp");
             ViewData["Participants"] = new SelectList(
-                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active)
                 , "Id", "Name");
             return View(attendance);
         }
@@ -112,7 +112,7 @@ namespace r2bw.Controllers
             ViewData["Events"] = new SelectList(_context.Meetings.Where(e => e.Active), "Id", "Timestamp");
 
             ViewData["Participants"] = new SelectList(
-                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active)
                 , "Id", "Name");
 
             return View(attendance);
@@ -154,7 +154,7 @@ namespace r2bw.Controllers
             ViewData["Events"] = new SelectList(_context.Meetings.Where(e => e.Active), "Id", "Timestamp");
 
             ViewData["Participants"] = new SelectList(
-                _context.Users.Where(p => p.Active).Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                _context.Users.Where(p => p.Active)
                 , "Id", "Name");
 
             return View(attendance);

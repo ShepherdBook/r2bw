@@ -105,7 +105,6 @@ namespace r2bw
                 Email = Configuration.GetSection("UserSettings")["Email"],
                 FirstName = "James",
                 LastName = "Kirk",
-                StatusId = (int)ParticipantStatusValue.Active,
                 Active = true,
                 EmailConfirmed = true,
                 LockoutEnabled = false

@@ -123,8 +123,7 @@ namespace r2bw.Controllers
             {
                 model.Attendees = _context.Users
                     .Where(p => p.Active)
-                    .Where(p => p.GroupId == thisMeeting.GroupId)
-                    .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                    .Where(p => p.GroupId == thisMeeting.GroupId)            
                     .Select(p => p.Id)
                     .ToArray();
             }
@@ -135,8 +134,7 @@ namespace r2bw.Controllers
 
             model.AllParticipants = _context.Users
                 .Where(p => p.Active)
-                .Include(p => p.Group)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                .Include(p => p.Group)                
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
@@ -147,8 +145,7 @@ namespace r2bw.Controllers
             var present = _context.Attendance.Where(a => a.Active).Where(a => a.MeetingId == thisMeeting.Id).Select(a => a.UserId).ToList();
 
             model.Present = _context.Users
-                .Where(p => p.Active)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                .Where(p => p.Active)                         
                 .Where(p => present.Contains(p.Id))
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)

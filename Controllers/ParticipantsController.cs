@@ -12,13 +12,13 @@ namespace r2bw.Controllers
 {
 
     [Authorize]
-    public class ParticipantsController : Controller
+    public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly SelectList shirtSizes;
         private readonly SelectList shirtSexes;
 
-        public ParticipantsController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context)
         {
             _context = context;
 
@@ -29,7 +29,7 @@ namespace r2bw.Controllers
             shirtSexes = new SelectList(sexes);
         }
 
-        // GET: Participants
+        // GET: Users
         public async Task<IActionResult> Index()
         {
             return View(await _context.Users
@@ -38,55 +38,7 @@ namespace r2bw.Controllers
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
                 .ToListAsync());
-        }
-
-        // GET: Pending sign ups
-        public async Task<IActionResult> Pending()
-        {
-            return View(await _context.Users
-                .Where(p => p.Active)
-                .Include(p => p.Group)
-                .OrderBy(p => p.FirstName)
-                .OrderBy(p => p.LastName)
-                .OrderBy(p => p.Group.Name)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Pending)
-                .ToListAsync());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approve([FromForm] string participantId)
-        {
-            var participantRecord = _context.Users.Find(participantId);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (participantRecord != null)
-                    {
-                        participantRecord.StatusId = (int)ParticipantStatusValue.Active;
-                        participantRecord.Active = true;
-
-                        _context.Update(participantRecord);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ParticipantExists(participantId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-            return RedirectToAction(nameof(Pending));
         }
 
         // GET: Participants/Details/5
@@ -121,46 +73,10 @@ namespace r2bw.Controllers
             return View();
         }
 
-        // GET: Participants/Register
-        [AllowAnonymous]
-        public IActionResult Register()
-        {
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-            
-            return View();
-        }
-
         [AllowAnonymous]
         public IActionResult ThankYou()
         {
             return View();
-        }
-
-        // POST: Participants/Register
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User participant)
-        {
-            if (ModelState.IsValid)
-            {
-                participant.StatusId = (int)ParticipantStatusValue.Pending;
-                participant.WaiverSignedOn = DateTimeOffset.Now;
-                participant.Active = true;
-                _context.Add(participant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ThankYou));
-            }
-
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-
-            return RedirectToAction(nameof(ThankYou));
         }
 
         // POST: Participants/Create
@@ -168,13 +84,15 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User participant)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User newUser)
         {
             if (ModelState.IsValid)
-            {
-                participant.StatusId = (int)ParticipantStatusValue.Active;
-                participant.Active = true;
-                _context.Add(participant);
+            {                
+                newUser.Active = true;
+                newUser.UserName = newUser.Email;
+                newUser.WaiverSignedOn = DateTimeOffset.Now;
+
+                _context.Add(newUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -183,7 +101,7 @@ namespace r2bw.Controllers
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
-            return View(participant);
+            return View(newUser);
         }
 
         // GET: Participants/Edit/5

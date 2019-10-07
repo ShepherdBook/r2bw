@@ -50,6 +50,10 @@ namespace r2bw.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
 
             [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -59,6 +63,21 @@ namespace r2bw.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            [Required]
+            public DateTime DateOfBirth { get; set; }
+
+            public string Sex { get; set; }
+
+            public string Size { get; set; }
+
+            [Required]
+            [Range(1, int.MaxValue, ErrorMessage = "You must pick a group")]
+            public int GroupId { get; set; }
+
+            public Group Group { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -71,9 +90,12 @@ namespace r2bw.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, Active = true, StatusId = (int)ParticipantStatusValue.Active };
-                //await Task.FromResult(true);
-                //return LocalRedirect(returnUrl);
+                var user = new User { 
+                    UserName = Input.Email, 
+                    Email = Input.Email, 
+                    FirstName = Input.FirstName, 
+                    Active = true};
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

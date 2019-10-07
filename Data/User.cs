@@ -41,10 +41,6 @@ namespace r2bw.Data
 
         public Group Group { get; set; }
 
-        public int StatusId { get; set; }
-
-        public ParticipantStatus Status { get; set; }
-
         public ICollection<Attendance> Attendance { get; set; }
 
         public ICollection<Purchase> Purchases { get; set; }

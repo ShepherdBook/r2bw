@@ -13,10 +13,6 @@ namespace r2bw.Data
         {
         }
 
-        //public DbSet<User> Users { get; set; }
-
-        public DbSet<ParticipantStatus> ParticipantStatus { get; set; }
-
         public DbSet<Meeting> Meetings { get; set; }
 
         public DbSet<Attendance> Attendance { get; set; }
