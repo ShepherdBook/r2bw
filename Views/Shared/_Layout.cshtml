@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - R2bw beta</title>
+    <title>@ViewData["Title"] - Running2bWell</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -50,6 +50,15 @@
         @RenderBody()
         <hr />
         <footer>
+            <environment include="Development">
+                <p>Environment: Development</p>
+            </environment>
+            <environment include="Staging">
+                <p>Environment: Staging</p>
+            </environment>
+            <environment include="Production">
+                <p>Environment: Production</p>
+            </environment>
             <p>&copy; 2019 - Running2bWell</p>
         </footer>
     </div>
