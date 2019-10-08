@@ -32,13 +32,15 @@ namespace r2bw.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users
+            List<User> users = await _context.Users
                 .Where(p => p.Active)
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
-                .ToListAsync());
+                .ToListAsync();
+
+            return View(users);
         }
 
         // GET: Participants/Details/5

@@ -6,20 +6,17 @@
 
 <h2>Users</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Group.Name)
+                Group
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WaiverSignedOn)
+                Waiver Signed On
             </th>
             <th></th>
         </tr>
@@ -28,7 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
@@ -37,10 +34,7 @@
                 @Html.DisplayFor(modelItem => item.WaiverSignedOn)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Waiver" asp-route-id="@item.Id">Waiver</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

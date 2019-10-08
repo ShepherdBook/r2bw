@@ -45,5 +45,12 @@ namespace r2bw.Data
 
         public ICollection<Purchase> Purchases { get; set; }
 
+        [DisplayName("Full Name")]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
+
     }
 }
