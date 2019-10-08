@@ -101,8 +101,8 @@ namespace r2bw
             // Create the Administrator
             var poweruser = new User
             {
-                UserName = Configuration.GetSection("UserSettings")["Email"],
-                Email = Configuration.GetSection("UserSettings")["Email"],
+                UserName = Configuration["AdminEmail"],
+                Email = Configuration["AdminEmail"],
                 FirstName = "James",
                 LastName = "Kirk",
                 Active = true,
@@ -110,8 +110,8 @@ namespace r2bw
                 LockoutEnabled = false
             };
 
-            string UserPassword = Configuration.GetSection("UserSettings")["Password"];
-            var user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["Email"]);
+            string UserPassword = Configuration["AdminPassword"];
+            var user = await UserManager.FindByEmailAsync(Configuration["AdminEmail"]);
 
             if(user == null)
             {
