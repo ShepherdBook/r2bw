@@ -6,18 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace r2bw.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Participant> Participants { get; set; }
-
-        public DbSet<ParticipantStatus> ParticipantStatus { get; set; }
-
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Meeting> Meetings { get; set; }
 
         public DbSet<Attendance> Attendance { get; set; }
 
@@ -27,10 +23,9 @@ namespace r2bw.Data
 
         public DbSet<PurchaseType> PurchaseTypes { get; set; }
 
-        // Uncommenting this will cause error when applying migrations
-        // protected override void OnModelCreating(ModelBuilder builder)
-        // {
-            
-        // }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }

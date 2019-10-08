@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181216190506_waiver-optional")]
-    partial class waiveroptional
+    partial class WaiverOptional
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

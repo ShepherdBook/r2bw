@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using r2bw.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AspNetCore.RouteAnalyzer;
 
 namespace r2bw
 {
@@ -38,18 +40,17 @@ namespace r2bw
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddTransient<UserManager<IdentityUser>>();
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+            services.AddTransient<UserManager<User>>();
             services.AddTransient<RoleManager<IdentityRole>>();
 
-            // services.AddAuthorization(options =>
-            // {
-            //     options.AddPolicy("Add Role", policy => policy.RequireClaim("Can activate users", "activate.users"));
-            // });
+            services.AddRouteAnalyzer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +70,6 @@ namespace r2bw
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -77,44 +77,49 @@ namespace r2bw
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRouteAnalyzer("/routes");
             });
 
-            //CreateRoles(serviceProvider).Wait();
+            CreateRoles(serviceProvider).Wait();
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
             string[] roleNames = { "Administrator", "Group-Leader", "Participant" };
 
             foreach (var roleName in roleNames)
             {
                 //creating the roles and seeding them to the database
-                var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
+                if (!(await RoleManager.RoleExistsAsync(roleName)))
                 {
                     await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
             // Create the Administrator
-            var poweruser = new IdentityUser
+            var poweruser = new User
             {
-                UserName = Configuration.GetSection("UserSettings")["UserName"],
-                Email = Configuration.GetSection("UserSettings")["Email"]
+                UserName = Configuration.GetSection("UserSettings")["Email"],
+                Email = Configuration.GetSection("UserSettings")["Email"],
+                FirstName = "James",
+                LastName = "Kirk",
+                Active = true,
+                EmailConfirmed = true,
+                LockoutEnabled = false
             };
 
-            string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
-            var user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
+            string UserPassword = Configuration.GetSection("UserSettings")["Password"];
+            var user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["Email"]);
 
             if(user == null)
             {
-                    var createPowerUser = await UserManager.CreateAsync(poweruser, UserPassword);
-                    if (createPowerUser.Succeeded)
-                    {
-                        await UserManager.AddToRoleAsync(poweruser, "Administrator");
-                    }
+                var createPowerUser = await UserManager.CreateAsync(poweruser, UserPassword);
+                if (createPowerUser.Succeeded)
+                {
+                    await UserManager.AddToRoleAsync(poweruser, "Administrator");
+                }
             }
         }
     }

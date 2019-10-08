@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181216203303_event-name")]
-    partial class eventname
+    partial class EventName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

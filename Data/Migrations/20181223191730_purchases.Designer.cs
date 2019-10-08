@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181223191730_purchases")]
-    partial class purchases
+    partial class Purchases
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

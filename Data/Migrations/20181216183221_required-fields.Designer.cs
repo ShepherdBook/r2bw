@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181216183221_required-fields")]
-    partial class requiredfields
+    partial class RequiredFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

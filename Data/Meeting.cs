@@ -6,10 +6,10 @@ namespace r2bw.Data
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
-    public class Event
+    public class Meeting
     {
 
-        public Event() 
+        public Meeting() 
         {
             this.Attendance = new HashSet<Attendance>();
         }

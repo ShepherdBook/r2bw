@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20181216193404_optional-fields")]
-    partial class optionalfields
+    partial class OptionalFields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

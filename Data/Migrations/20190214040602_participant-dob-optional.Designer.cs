@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190214040602_participant-dob-optional")]
-    partial class participantdoboptional
+    partial class PparticipantDobOptional
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

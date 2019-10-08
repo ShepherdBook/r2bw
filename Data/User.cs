@@ -4,18 +4,15 @@ namespace r2bw.Data
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Identity;
 
-    public class Participant
+    public class User : IdentityUser
     {
-
-        public Participant()
+        public User()
         {
             this.Attendance = new HashSet<Attendance>();
             this.Purchases = new HashSet<Purchase>();
         }
-
-        [Required]
-        public int Id { get; set; }
 
         public string Name { get { return $"{FirstName} {LastName}"; } }
 
@@ -25,9 +22,6 @@ namespace r2bw.Data
 
         [DisplayName("Last name")]
         public string LastName { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
 
         [DisplayName("Waiver signed on")]
         [DataType(DataType.Date)]
@@ -43,17 +37,20 @@ namespace r2bw.Data
 
         public bool Active { get; set; }
 
-        [Required]
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
 
         public Group Group { get; set; }
-
-        public int StatusId { get; set; }
-
-        public ParticipantStatus Status { get; set; }
 
         public ICollection<Attendance> Attendance { get; set; }
 
         public ICollection<Purchase> Purchases { get; set; }
+
+        [DisplayName("Full Name")]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
+
     }
 }

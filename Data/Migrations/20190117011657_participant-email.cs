@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class participantemail : Migration
+    public partial class ParticipantEmail : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

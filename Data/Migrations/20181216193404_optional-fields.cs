@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class optionalfields : Migration
+    public partial class OptionalFields : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

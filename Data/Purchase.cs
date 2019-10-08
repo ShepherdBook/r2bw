@@ -27,8 +27,8 @@ namespace r2bw.Data
         public bool Active { get; set; }
 
         [Required]
-        public int ParticipantId { get; set; }
+        public string UserId { get; set; }
 
-        public Participant Participant { get; set; }
+        public User User { get; set; }
     }
 }

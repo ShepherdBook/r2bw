@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class purchasevendor : Migration
+    public partial class PurchaseVendor : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -10,8 +10,8 @@ using r2bw.Data;
 namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190210165343_split-name")]
-    partial class SplitName
+    [Migration("20190813232805_merge-users-participants")]
+    partial class MergeUsersParticipants
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,6 +75,9 @@ namespace r2bw.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -114,6 +117,8 @@ namespace r2bw.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -192,36 +197,19 @@ namespace r2bw.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("EventId");
+                    b.Property<bool>("Active");
 
-                    b.Property<int>("ParticipantId");
+                    b.Property<int>("MeetingId");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("MeetingId");
 
-                    b.HasIndex("ParticipantId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Attendance");
-                });
-
-            modelBuilder.Entity("r2bw.Data.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GroupId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<DateTime>("Timestamp");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("r2bw.Data.Group", b =>
@@ -229,6 +217,8 @@ namespace r2bw.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -238,35 +228,40 @@ namespace r2bw.Data.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("r2bw.Data.Participant", b =>
+            modelBuilder.Entity("r2bw.Data.Meeting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateOfBirth");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired();
+                    b.Property<bool>("Active");
 
                     b.Property<int>("GroupId");
 
-                    b.Property<string>("LastName")
-                        .IsRequired();
+                    b.Property<int?>("ManualHeadcount");
 
-                    b.Property<string>("Sex");
+                    b.Property<string>("Name");
 
-                    b.Property<string>("Size");
-
-                    b.Property<DateTimeOffset?>("WaiverSignedOn");
+                    b.Property<DateTime>("Timestamp");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Meetings");
+                });
+
+            modelBuilder.Entity("r2bw.Data.ParticipantStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ParticipantStatus");
                 });
 
             modelBuilder.Entity("r2bw.Data.Purchase", b =>
@@ -275,22 +270,25 @@ namespace r2bw.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount");
+                    b.Property<bool>("Active");
 
-                    b.Property<int>("ParticipantId");
+                    b.Property<double>("Amount");
 
                     b.Property<DateTime>("PurchasedOn");
 
                     b.Property<string>("TypeName")
                         .IsRequired();
 
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
                     b.Property<string>("Vendor");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParticipantId");
-
                     b.HasIndex("TypeName");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Purchases");
                 });
@@ -303,6 +301,38 @@ namespace r2bw.Data.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("PurchaseTypes");
+                });
+
+            modelBuilder.Entity("r2bw.Data.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime?>("DateOfBirth");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Sex");
+
+                    b.Property<string>("Size");
+
+                    b.Property<int>("StatusId");
+
+                    b.Property<DateTimeOffset?>("WaiverSignedOn");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("User");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -352,43 +382,47 @@ namespace r2bw.Data.Migrations
 
             modelBuilder.Entity("r2bw.Data.Attendance", b =>
                 {
-                    b.HasOne("r2bw.Data.Event", "Event")
+                    b.HasOne("r2bw.Data.Meeting", "Meeting")
                         .WithMany("Attendance")
-                        .HasForeignKey("EventId")
+                        .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("r2bw.Data.Participant", "Participant")
+                    b.HasOne("r2bw.Data.User", "User")
                         .WithMany("Attendance")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("r2bw.Data.Event", b =>
+            modelBuilder.Entity("r2bw.Data.Meeting", b =>
                 {
                     b.HasOne("r2bw.Data.Group", "Group")
-                        .WithMany("Events")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("r2bw.Data.Participant", b =>
-                {
-                    b.HasOne("r2bw.Data.Group", "Group")
-                        .WithMany("Participants")
+                        .WithMany("Meetings")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("r2bw.Data.Purchase", b =>
                 {
-                    b.HasOne("r2bw.Data.Participant", "Participant")
-                        .WithMany("Purchases")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("r2bw.Data.PurchaseType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeName")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("r2bw.Data.User", "User")
+                        .WithMany("Purchases")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("r2bw.Data.User", b =>
+                {
+                    b.HasOne("r2bw.Data.Group", "Group")
+                        .WithMany("Users")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("r2bw.Data.ParticipantStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
