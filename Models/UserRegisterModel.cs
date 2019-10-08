@@ -9,7 +9,7 @@ namespace r2bw.Models
 {
     public class UserRegisterModel : RegisterModel
     {
-        public UserRegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender) : base(userManager, signInManager, logger, emailSender)
+        public UserRegisterModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender, ApplicationDbContext context) : base(userManager, signInManager, logger, emailSender, context)
         {
         }
     }

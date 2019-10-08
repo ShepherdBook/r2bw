@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using r2bw.Data;
 
@@ -20,17 +23,20 @@ namespace r2bw.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -69,19 +75,23 @@ namespace r2bw.Areas.Identity.Pages.Account
             [Required]
             public DateTime DateOfBirth { get; set; }
 
+            [Display(Name = "Sex (for apparel sizing only)")]
             public string Sex { get; set; }
 
+            [Display(Name = "Size (for apparel sizing only)")]
             public string Size { get; set; }
 
-            [Required]
-            [Range(1, int.MaxValue, ErrorMessage = "You must pick a group")]
-            public int GroupId { get; set; }
-
             public Group Group { get; set; }
+
+            public int GroupId { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public async void OnGet(string returnUrl = null)
         {
+            List<Group> groups = await _context.Groups.Where(g => g.Active).ToListAsync();
+
+            ViewData["Groups"] = groups.Select(g => new SelectListItem(g.Name, g.Id.ToString()));
+
             ReturnUrl = returnUrl;
         }
 
@@ -94,6 +104,12 @@ namespace r2bw.Areas.Identity.Pages.Account
                     UserName = Input.Email, 
                     Email = Input.Email, 
                     FirstName = Input.FirstName, 
+                    DateOfBirth = Input.DateOfBirth.Date,
+                    LastName = Input.LastName,
+                    Sex = Input.Sex,
+                    Size = Input.Size,
+                    WaiverSignedOn = DateTimeOffset.Now,
+                    GroupId = Input.GroupId,
                     Active = true};
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -121,6 +137,8 @@ namespace r2bw.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            List<Group> groups = await _context.Groups.Where(g => g.Active).ToListAsync();
+            ViewData["Groups"] = groups.Select(g => new SelectListItem(g.Name, g.Id.ToString()));
             return Page();
         }
     }
