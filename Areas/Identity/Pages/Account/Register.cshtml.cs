@@ -81,9 +81,9 @@ namespace r2bw.Areas.Identity.Pages.Account
             [Display(Name = "Size (for apparel sizing only)")]
             public string Size { get; set; }
 
-            public Group Group { get; set; }
+            //public Group Group { get; set; }
 
-            public int GroupId { get; set; }
+            //public int GroupId { get; set; }
         }
 
         public async void OnGet(string returnUrl = null)
@@ -109,7 +109,7 @@ namespace r2bw.Areas.Identity.Pages.Account
                     Sex = Input.Sex,
                     Size = Input.Size,
                     WaiverSignedOn = DateTimeOffset.Now,
-                    GroupId = Input.GroupId,
+                    //GroupId = Input.GroupId,
                     Active = true};
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
