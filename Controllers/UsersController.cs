@@ -40,32 +40,7 @@ namespace r2bw.Controllers
                 .OrderBy(p => p.Group.Name)
                 .ToListAsync();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (participantRecord != null)
-                    {
-                        participantRecord.StatusId = (int)ParticipantStatusValue.Active;
-                        participantRecord.Active = true;
-
-                        _context.Update(participantRecord);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ParticipantExists(participantId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-            return RedirectToAction(nameof(Pending));
+            return View(users);
         }
 
         // GET: Participants/Details/5
@@ -157,9 +132,9 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] Participant participant)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] User user)
         {
-            if (id != participant.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -168,12 +143,12 @@ namespace r2bw.Controllers
             {
                 try
                 {
-                    _context.Update(participant);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParticipantExists(participant.Id))
+                    if (!ParticipantExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -189,7 +164,7 @@ namespace r2bw.Controllers
             ViewData["ShirtSizes"] = this.shirtSizes;
             ViewData["ShirtSexes"] = this.shirtSexes;
 
-            return View(participant);
+            return View(user);
         }
 
         // GET: Participants/Waiver/5
