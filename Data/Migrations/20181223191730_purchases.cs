@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class purchases : Migration
+    public partial class Purchases : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

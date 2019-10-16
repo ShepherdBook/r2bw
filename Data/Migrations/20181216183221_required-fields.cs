@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace r2bw.Data.Migrations
 {
-    public partial class requiredfields : Migration
+    public partial class RequiredFields : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

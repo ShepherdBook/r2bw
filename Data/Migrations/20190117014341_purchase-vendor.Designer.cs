@@ -11,7 +11,7 @@ namespace r2bw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190117014341_purchase-vendor")]
-    partial class purchasevendor
+    partial class PurchaseVendor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

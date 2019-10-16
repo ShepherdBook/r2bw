@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - R2bw beta</title>
+    <title>@ViewData["Title"] - Running2bWell</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -29,16 +29,15 @@
                 <!-- <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
                     <img href="/images/logo-oval-small.jpg" class="image-responsive" >
                 </a> -->
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-left"><img src="/images/logo-oval-small.png"></a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-left"><img src="/images/logo-white-bg.jpeg"></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Groups" asp-action="Index">Groups</a></li>
-                    <li><a asp-area="" asp-controller="Participants" asp-action="Index">Participants</a></li>
-                    <li><a asp-area="" asp-controller="Participants" asp-action="Pending">Pending signups</a></li>
-                    <li><a asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
+                    <!-- <li><a asp-area="" asp-controller="Groups" asp-action="Index">Groups</a></li> -->
+                    <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                    <!-- <li><a asp-area="" asp-controller="Events" asp-action="Index">Events</a></li>
                     <li><a asp-area="" asp-controller="Attendance" asp-action="Index">Attendance</a></li>
-                    <li><a asp-area="" asp-controller="Purchases" asp-action="Index">Purchases</a></li>
+                    <li><a asp-area="" asp-controller="Purchases" asp-action="Index">Purchases</a></li> -->
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
@@ -51,7 +50,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - Running2bWell</p>
+            <p>&copy; 2019 - Running2bWell</p>
         </footer>
     </div>
 

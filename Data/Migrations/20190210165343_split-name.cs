@@ -2,7 +2,7 @@
 
 namespace r2bw.Data.Migrations
 {
-    public partial class splitname : Migration
+    public partial class SplitName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

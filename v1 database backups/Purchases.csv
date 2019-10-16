@@ -1,0 +1,3 @@
+Id,TypeName,PurchasedOn,Amount,ParticipantId,Vendor,Active
+2,Shoes,2019-04-30 00:00:00.0000000,100,127,Second Sole medina,1
+3,Shoes,2019-04-30 00:00:00.0000000,100,203,Second Sole Akron,1

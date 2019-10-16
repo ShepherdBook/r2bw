@@ -25,7 +25,7 @@ namespace r2bw.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events
+            return View(await _context.Meetings
                 .Include(e => e.Group)
                 .Include(e => e.Attendance)
                 .Where(e => e.Active)
@@ -41,17 +41,17 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var meeting = await _context.Meetings
                 .Include(e => e.Group)
                 .Where(e => e.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            if (meeting == null)
             {
                 return NotFound();
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            return View(@event);
+            return View(meeting);
         }
 
         // GET: Events/Create
@@ -67,17 +67,17 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Timestamp,GroupId,Name")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Timestamp,GroupId,Name")] Meeting meeting)
         {
             if (ModelState.IsValid)
             {
-                @event.Active = true;
-                _context.Add(@event);
+                meeting.Active = true;
+                _context.Add(meeting);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            return View(@event);
+            return View(meeting);
         }
 
         // GET: Events/Edit/5
@@ -88,7 +88,7 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
+            var @event = await _context.Meetings.FindAsync(id);
             if (@event == null)
             {
                 return NotFound();
@@ -107,48 +107,45 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var thisEvent = await _context.Events.FindAsync(id);
-            if (thisEvent == null)
+            var thisMeeting = await _context.Meetings.FindAsync(id);
+            if (thisMeeting == null)
             {
                 return NotFound();
             }
 
-            var model = new EventAttendanceModel();
+            var model = new MeetingAttendanceModel();
 
-            thisEvent.Attendance = _context.Attendance.Where(a => a.Active).Where(a => a.EventId == thisEvent.Id).ToList();
+            thisMeeting.Attendance = _context.Attendance.Where(a => a.Active).Where(a => a.MeetingId == thisMeeting.Id).ToList();
 
-            model.Event = thisEvent;
+            model.Meeting = thisMeeting;
 
-            if (thisEvent.Attendance.Count() == 0)
+            if (thisMeeting.Attendance.Count() == 0)
             {
-                model.Attendees = _context.Participants
+                model.Attendees = _context.Users
                     .Where(p => p.Active)
-                    .Where(p => p.GroupId == thisEvent.GroupId)
-                    .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                    .Where(p => p.GroupId == thisMeeting.GroupId)            
                     .Select(p => p.Id)
                     .ToArray();
             }
             else 
             {
-                model.Attendees = thisEvent.Attendance.Select(a => a.ParticipantId).ToArray();
+                model.Attendees = thisMeeting.Attendance.Select(a => a.UserId).ToArray();
             }
 
-            model.AllParticipants = _context.Participants
+            model.AllParticipants = _context.Users
                 .Where(p => p.Active)
-                .Include(p => p.Group)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+                .Include(p => p.Group)                
                 .OrderBy(p => p.FirstName)
                 .OrderBy(p => p.LastName)
                 .OrderBy(p => p.Group.Name)
                 .ToList();
 
-            ViewData["AllParticipants"] = new SelectList(model.AllParticipants, "Id", "Name");
+            ViewData["AllUsers"] = new SelectList(model.AllParticipants, "Id", "Name");
 
-            var present = _context.Attendance.Where(a => a.Active).Where(a => a.EventId == thisEvent.Id).Select(a => a.ParticipantId).ToList();
+            var present = _context.Attendance.Where(a => a.Active).Where(a => a.MeetingId == thisMeeting.Id).Select(a => a.UserId).ToList();
 
-            model.Present = _context.Participants
-                .Where(p => p.Active)
-                .Where(p => p.StatusId == (int)ParticipantStatusValue.Active)
+            model.Present = _context.Users
+                .Where(p => p.Active)                         
                 .Where(p => present.Contains(p.Id))
                 .Include(p => p.Group)
                 .OrderBy(p => p.FirstName)
@@ -161,9 +158,9 @@ namespace r2bw.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Attendance(int id, [Bind("Event,Attendees")] EventAttendanceModel model)
+        public async Task<IActionResult> Attendance(int id, [Bind("Meeting,Attendees")] MeetingAttendanceModel model)
         {
-            if (id != model.Event.Id)
+            if (id != model.Meeting.Id)
             {
                 return NotFound();
             }
@@ -172,11 +169,11 @@ namespace r2bw.Controllers
             {
                 try
                 {
-                    var existing = _context.Attendance.Where(a => a.Active).Where(a => model.Attendees.Contains(a.ParticipantId) && a.EventId == model.Event.Id).ToList();
+                    var existing = _context.Attendance.Where(a => a.Active).Where(a => model.Attendees.Contains(a.UserId) && a.MeetingId == model.Meeting.Id).ToList();
                     var received = model.Attendees
                         .Select(pId => new Attendance(
-                            _context.Participants.Find(pId), 
-                            _context.Events.Find(model.Event.Id)))
+                            _context.Users.Find(pId), 
+                            _context.Meetings.Find(model.Meeting.Id)))
                         .ToList();
 
                     var toAdd = received.Except(existing).ToList();
@@ -186,7 +183,7 @@ namespace r2bw.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(model.Event.Id))
+                    if (!EventExists(model.Meeting.Id))
                     {
                         return NotFound();
                     }
@@ -205,9 +202,9 @@ namespace r2bw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Timestamp,GroupId,Name,ManualHeadcount,Active")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Timestamp,GroupId,Name,ManualHeadcount,Active")] Meeting meeting)
         {
-            if (id != @event.Id)
+            if (id != meeting.Id)
             {
                 return NotFound();
             }
@@ -216,12 +213,12 @@ namespace r2bw.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
+                    _context.Update(meeting);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.Id))
+                    if (!EventExists(meeting.Id))
                     {
                         return NotFound();
                     }
@@ -234,7 +231,7 @@ namespace r2bw.Controllers
             }
 
             ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            return View(@event);
+            return View(meeting);
         }
 
         // GET: Events/Delete/5
@@ -245,7 +242,7 @@ namespace r2bw.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var @event = await _context.Meetings
                 .Where(e => e.Active)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -262,15 +259,15 @@ namespace r2bw.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            @event.Active = false;
+            var meeting = await _context.Meetings.FindAsync(id);
+            meeting.Active = false;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EventExists(int id)
         {
-            return _context.Events.Any(e => e.Id == id);
+            return _context.Meetings.Any(e => e.Id == id);
         }
     }
 }
