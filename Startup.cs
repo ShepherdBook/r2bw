@@ -103,8 +103,8 @@ namespace r2bw
             {
                 UserName = Configuration["AdminEmail"],
                 Email = Configuration["AdminEmail"],
-                FirstName = "James",
-                LastName = "Kirk",
+                FirstName = "Zach",
+                LastName = "Johnston",
                 Active = true,
                 EmailConfirmed = true,
                 LockoutEnabled = false
