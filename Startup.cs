@@ -87,7 +87,7 @@ namespace r2bw
         {
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            string[] roleNames = { "Administrator", "Group-Leader", "Participant" };
+            string[] roleNames = { "Administrator", "Group-Leader", "User" };
 
             foreach (var roleName in roleNames)
             {
