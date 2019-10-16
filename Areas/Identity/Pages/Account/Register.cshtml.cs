@@ -110,7 +110,8 @@ namespace r2bw.Areas.Identity.Pages.Account
                     Size = Input.Size,
                     WaiverSignedOn = DateTimeOffset.Now,
                     //GroupId = Input.GroupId,
-                    Active = true};
+                    Active = true,
+                    SecurityStamp = Guid.NewGuid().ToString()};
                 
                 var createResult = await _userManager.CreateAsync(user, Input.Password);
 
