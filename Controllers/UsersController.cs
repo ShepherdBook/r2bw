@@ -11,7 +11,7 @@ using r2bw.Data;
 namespace r2bw.Controllers
 {
 
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
