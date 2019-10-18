@@ -115,34 +115,43 @@ namespace r2bw.Areas.Identity.Pages.Account
                 
                 var createResult = await _userManager.CreateAsync(user, Input.Password);
 
-                // Add to user role (unless it is running2bwell@gmail.com)
-                IdentityResult authorizeResult;
-                if (String.Compare(user.Email.Trim(), "running2bwell@gmail.com", true) == 0)
-                {
-                    authorizeResult = await _userManager.AddToRoleAsync(user, "Administrator");
-                }
-                else 
-                {
-                    authorizeResult = await _userManager.AddToRoleAsync(user, "User");
-                }
-
-                if (createResult.Succeeded && authorizeResult.Succeeded)
+                if (createResult.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code },
-                        protocol: Request.Scheme);
+                    // Add to user role (unless it is running2bwell@gmail.com)
+                    IdentityResult authorizeResult;
+                    if (String.Compare(user.Email.Trim(), "running2bwell@gmail.com", true) == 0)
+                    {
+                        authorizeResult = await _userManager.AddToRoleAsync(user, "Administrator");
+                    }
+                    else 
+                    {
+                        authorizeResult = await _userManager.AddToRoleAsync(user, "User");
+                    }
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    if (authorizeResult.Succeeded)
+                    {
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { userId = user.Id, code },
+                            protocol: Request.Scheme);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
+
+                    foreach (var error in authorizeResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
+
                 foreach (var error in createResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
