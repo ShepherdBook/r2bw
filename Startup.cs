@@ -117,7 +117,11 @@ namespace r2bw
                 LastName = "Johnston",
                 Active = true,
                 EmailConfirmed = true,
-                LockoutEnabled = false
+                LockoutEnabled = false,
+                Size = "L",
+                Sex = "Male",
+                DateOfBirth = new DateTime(1992, 5, 12),
+                WaiverSignedOn = DateTimeOffset.Now
             };
 
             string UserPassword = Configuration["AdminPassword"];

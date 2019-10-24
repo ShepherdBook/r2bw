@@ -25,11 +25,11 @@ namespace r2bw.Data
 
         [DisplayName("Waiver signed on")]
         [DataType(DataType.Date)]
-        public DateTimeOffset? WaiverSignedOn { get; set; }
+        public DateTimeOffset WaiverSignedOn { get; set; }
 
         [DisplayName("Date of Birth")]
         [DataType(DataType.Date)]
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         public string Sex { get; set; }
 
