@@ -25,12 +25,12 @@ namespace r2bw.Services
             SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-alpha-key-vault.vault.azure.net/secrets/SendGridKey")
                 .ConfigureAwait(false);
 
-            logger.LogInformation($"Using secret: {secret.Value}");
+            logger.LogInformation($"Sending message");
 
             await Execute(secret.Value, subject, message, email);
         }
 
-        private Task Execute(string apiKey, string subject, string message, string email)
+        private async Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
@@ -46,7 +46,9 @@ namespace r2bw.Services
             // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
 
-            return client.SendEmailAsync(msg);
+            var response = await client.SendEmailAsync(msg);
+
+            logger.LogInformation($"Email sent, reponse from SendGrid is {response.StatusCode}");
         }
     }
 }
