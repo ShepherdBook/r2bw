@@ -5,11 +5,19 @@ using SendGrid.Helpers.Mail;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.Logging;
 
 namespace r2bw.Services
 {
     public class EmailSender : IEmailSender
     {
+        private readonly ILogger logger;
+
+        public EmailSender(ILogger<EmailSender> logger)
+        {
+            this.logger = logger;
+        }
+
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
@@ -17,7 +25,7 @@ namespace r2bw.Services
             SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-alpha-key-vault.vault.azure.net/secrets/SendGridKey")
                 .ConfigureAwait(false);
 
-                System.Console.WriteLine("Using key: " + secret.Value);
+            logger.LogInformation($"Using secret: {secret.Value}");
 
             await Execute(secret.Value, subject, message, email);
         }
