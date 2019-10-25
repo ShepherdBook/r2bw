@@ -1,24 +1,23 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.KeyVault.Models;
+using Microsoft.Azure.Services.AppAuthentication;
 
 namespace r2bw.Services
 {
     public class EmailSender : IEmailSender
     {
-        // Set only via Secret Manager
-        public AuthMessageSenderOptions Options { get; }
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-alpha-key-vault.vault.azure.net/secrets/SendGridKey")
+                .ConfigureAwait(false);
 
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)
-        {
-            Options = optionsAccessor.Value;
-        }
-        
-        public Task SendEmailAsync(string email, string subject, string message)
-        {
-            return Execute(Options.SendGridKey, subject, message, email);
+            await Execute(secret.Value, subject, message, email);
         }
 
         private Task Execute(string apiKey, string subject, string message, string email)
