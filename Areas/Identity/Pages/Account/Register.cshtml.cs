@@ -139,6 +139,11 @@ namespace r2bw.Areas.Identity.Pages.Account
 
                         return LocalRedirect(returnUrl);
                     }
+                    else 
+                    {
+                        string[] errors = authorizeResult.Errors.Select(e => e.Description).ToArray();
+                        _logger.LogError($"User \"{user.Email}\" was not added to role \"User\".\n{String.Join('\n', errors)}");
+                    }
 
                     foreach (var error in authorizeResult.Errors)
                     {
