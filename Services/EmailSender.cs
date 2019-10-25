@@ -17,6 +17,8 @@ namespace r2bw.Services
             SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-alpha-key-vault.vault.azure.net/secrets/SendGridKey")
                 .ConfigureAwait(false);
 
+                System.Console.WriteLine("Using key: " + secret.Value);
+
             await Execute(secret.Value, subject, message, email);
         }
 
