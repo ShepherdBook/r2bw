@@ -119,17 +119,10 @@ namespace r2bw.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // Add to user role (unless it is running2bwell@gmail.com)
-                    IdentityResult authorizeResult;
-                    if (String.Compare(user.Email.Trim(), "running2bwell@gmail.com", true) == 0)
-                    {
-                        authorizeResult = await _userManager.AddToRoleAsync(user, "Administrator");
-                    }
-                    else 
-                    {
-                        authorizeResult = await _userManager.AddToRoleAsync(user, "User");
-                    }
-
+                    // Add to user role
+                    var authorizeResult = await _userManager.AddToRoleAsync(user, "User");
+                    _logger.LogInformation("User added to a role.");
+                    
                     if (authorizeResult.Succeeded)
                     {
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -139,11 +132,16 @@ namespace r2bw.Areas.Identity.Pages.Account
                             values: new { userId = user.Id, code },
                             protocol: Request.Scheme);
 
+                        _logger.LogInformation("Sending confirmation email to user.");
                         await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                             $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
+                    }
+                    else 
+                    {
+                        string[] errors = authorizeResult.Errors.Select(e => e.Description).ToArray();
+                        _logger.LogError($"User \"{user.Email}\" was not added to role \"User\".\n{String.Join('\n', errors)}");
                     }
 
                     foreach (var error in authorizeResult.Errors)
