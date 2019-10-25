@@ -121,10 +121,10 @@ namespace r2bw.Areas.Identity.Pages.Account
 
                     // Add to user role
                     var authorizeResult = await _userManager.AddToRoleAsync(user, "User");
-
+                    _logger.LogInformation("User added to a role.");
+                    
                     if (authorizeResult.Succeeded)
                     {
-                        _logger.LogInformation("User added to a role.");
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         var callbackUrl = Url.Page(
