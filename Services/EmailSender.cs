@@ -22,7 +22,7 @@ namespace r2bw.Services
         {
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-alpha-key-vault.vault.azure.net/secrets/SendGridKey")
+            SecretBundle secret = await keyVaultClient.GetSecretAsync("https://r2bw-beta-key-vault.vault.azure.net/secrets/SendGridKey")
                 .ConfigureAwait(false);
 
             logger.LogInformation($"Sending message");
