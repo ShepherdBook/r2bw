@@ -119,16 +119,8 @@ namespace r2bw.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // Add to user role (unless it is running2bwell@gmail.com)
-                    IdentityResult authorizeResult;
-                    if (String.Compare(user.Email.Trim(), "running2bwell@gmail.com", true) == 0)
-                    {
-                        authorizeResult = await _userManager.AddToRoleAsync(user, "Administrator");
-                    }
-                    else 
-                    {
-                        authorizeResult = await _userManager.AddToRoleAsync(user, "User");
-                    }
+                    // Add to user role
+                    var authorizeResult = await _userManager.AddToRoleAsync(user, "User");
 
                     if (authorizeResult.Succeeded)
                     {
