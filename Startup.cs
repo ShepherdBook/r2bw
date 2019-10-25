@@ -57,7 +57,6 @@ namespace r2bw
             services.AddTransient<RoleManager<IdentityRole>>();
 
             services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddRouteAnalyzer();
         }
