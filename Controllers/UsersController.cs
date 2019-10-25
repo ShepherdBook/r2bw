@@ -74,37 +74,6 @@ namespace r2bw.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public IActionResult ThankYou()
-        {
-            return View();
-        }
-
-        // POST: Participants/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User newUser)
-        {
-            if (ModelState.IsValid)
-            {                
-                newUser.Active = true;
-                newUser.UserName = newUser.Email;
-                newUser.WaiverSignedOn = DateTimeOffset.Now;
-
-                _context.Add(newUser);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-
-            return View(newUser);
-        }
-
         // GET: Participants/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
@@ -164,66 +133,6 @@ namespace r2bw.Controllers
             ViewData["ShirtSexes"] = this.shirtSexes;
 
             return View(user);
-        }
-
-        // GET: Participants/Waiver/5
-        public async Task<IActionResult> Waiver(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var participant = await _context.Users.FindAsync(id);
-            if (participant == null)
-            {
-                return NotFound();
-            }
-
-            return View(participant);
-        }
-
-        // POST: Participants/Waiver/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Waiver(string id)
-        {
-            var participantRecord = _context.Users.Find(id);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (participantRecord != null && participantRecord.WaiverSignedOn == null)
-                    {
-                        participantRecord.WaiverSignedOn = DateTime.Now;
-                        participantRecord.Active = true;
-                        
-                        _context.Update(participantRecord);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ParticipantExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-
-            return View(participantRecord);
         }
 
         // GET: Participants/Delete/5
