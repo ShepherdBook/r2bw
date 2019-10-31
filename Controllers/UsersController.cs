@@ -11,7 +11,7 @@ using r2bw.Data;
 namespace r2bw.Controllers
 {
 
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,6 +43,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -65,6 +66,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
@@ -75,6 +77,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -98,6 +101,7 @@ namespace r2bw.Controllers
         // POST: Participants/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] User user)
@@ -136,6 +140,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -160,6 +165,7 @@ namespace r2bw.Controllers
         }
 
         // POST: Participants/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
