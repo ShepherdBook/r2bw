@@ -11,7 +11,7 @@ using r2bw.Data;
 namespace r2bw.Controllers
 {
 
-    [Authorize(Roles = "Administrator")]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,6 +43,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -65,6 +66,7 @@ namespace r2bw.Controllers
         }
 
         // GET: Participants/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
@@ -74,38 +76,8 @@ namespace r2bw.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public IActionResult ThankYou()
-        {
-            return View();
-        }
-
-        // POST: Participants/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth")] User newUser)
-        {
-            if (ModelState.IsValid)
-            {                
-                newUser.Active = true;
-                newUser.UserName = newUser.Email;
-                newUser.WaiverSignedOn = DateTimeOffset.Now;
-
-                _context.Add(newUser);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-
-            return View(newUser);
-        }
-
         // GET: Participants/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -129,9 +101,10 @@ namespace r2bw.Controllers
         // POST: Participants/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,Sex,Size,DateOfBirth")] User user)
         {
             if (id != user.Id)
             {
@@ -142,7 +115,15 @@ namespace r2bw.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    var toUpdate = await _context.Users.FindAsync(id);
+
+                    toUpdate.FirstName = user.FirstName;
+                    toUpdate.LastName = user.LastName;
+                    toUpdate.DateOfBirth = user.DateOfBirth;
+                    toUpdate.Sex = user.Sex;
+                    toUpdate.Size = user.Size;
+
+                    _context.Update(toUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -166,67 +147,8 @@ namespace r2bw.Controllers
             return View(user);
         }
 
-        // GET: Participants/Waiver/5
-        public async Task<IActionResult> Waiver(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var participant = await _context.Users.FindAsync(id);
-            if (participant == null)
-            {
-                return NotFound();
-            }
-
-            return View(participant);
-        }
-
-        // POST: Participants/Waiver/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Waiver(string id)
-        {
-            var participantRecord = _context.Users.Find(id);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (participantRecord != null && participantRecord.WaiverSignedOn == null)
-                    {
-                        participantRecord.WaiverSignedOn = DateTime.Now;
-                        participantRecord.Active = true;
-                        
-                        _context.Update(participantRecord);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ParticipantExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewData["Groups"] = new SelectList(_context.Groups.Where(g => g.Active), "Id", "Name");
-            ViewData["ShirtSizes"] = this.shirtSizes;
-            ViewData["ShirtSexes"] = this.shirtSexes;
-
-            return View(participantRecord);
-        }
-
         // GET: Participants/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -251,6 +173,7 @@ namespace r2bw.Controllers
         }
 
         // POST: Participants/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

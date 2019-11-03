@@ -59,6 +59,14 @@ namespace r2bw
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddRouteAnalyzer();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdministratorRole",
+                    policy => policy.RequireRole("Administrator"));
+            });
+
+            services.AddScoped<SignInManager<User>, Managers.R2bwSignInManager<User>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
