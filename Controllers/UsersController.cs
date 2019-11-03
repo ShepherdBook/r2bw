@@ -104,7 +104,7 @@ namespace r2bw.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,WaiverSignedOn,FirstName,LastName,Email,GroupId,Sex,Size,DateOfBirth,Active,StatusId")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,Sex,Size,DateOfBirth")] User user)
         {
             if (id != user.Id)
             {
@@ -115,7 +115,15 @@ namespace r2bw.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    var toUpdate = await _context.Users.FindAsync(id);
+
+                    toUpdate.FirstName = user.FirstName;
+                    toUpdate.LastName = user.LastName;
+                    toUpdate.DateOfBirth = user.DateOfBirth;
+                    toUpdate.Sex = user.Sex;
+                    toUpdate.Size = user.Size;
+
+                    _context.Update(toUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
