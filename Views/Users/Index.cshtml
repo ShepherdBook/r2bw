@@ -15,7 +15,11 @@
             <th>
                 Waiver Signed On
             </th>
-            <th></th>
+            @if (User.IsInRole("Administrator"))
+            {
+                <th>Email</th>
+                <th></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -27,13 +31,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.WaiverSignedOn)
             </td>
-            <td>
-                @if (User.IsInRole("Administrator"))
-                {
+            @if (User.IsInRole("Administrator"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                }
-            </td>
+                </td>
+            }
         </tr>
 }
     </tbody>
