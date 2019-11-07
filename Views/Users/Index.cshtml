@@ -18,6 +18,7 @@
             @if (User.IsInRole("Administrator"))
             {
                 <th>Email</th>
+                <th>Confirmed?</th>
                 <th></th>
             }
         </tr>
@@ -35,6 +36,9 @@
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailConfirmedText)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>

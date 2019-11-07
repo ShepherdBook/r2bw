@@ -52,5 +52,10 @@ namespace r2bw.Data
             }
         }
 
+        public string EmailConfirmedText {
+            get {
+                return this.EmailConfirmed ? "Yes" : "No";
+            }
+        }
     }
 }
