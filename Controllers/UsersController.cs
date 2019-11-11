@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using r2bw.Data;
+using r2bw.Services;
 
 namespace r2bw.Controllers
 {
@@ -188,6 +191,23 @@ namespace r2bw.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public async Task<IActionResult> Export()
+        {
+            List<User> users = await _context.Users.ToListAsync();
+
+            var stream = new MemoryStream();
+            var writeFile = new StreamWriter(stream);
+            var csv = new CsvWriter(writeFile);
+
+            csv.Configuration.RegisterClassMap<UserCsvMap>();
+            csv.WriteRecords(users);
+
+            stream.Position = 0; //reset stream
+            return File(stream, "application/octet-stream", "Users.csv");
         }
 
         private bool ParticipantExists(string id)
