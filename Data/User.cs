@@ -35,6 +35,9 @@ namespace r2bw.Data
 
         public string Size { get; set; }
 
+        [DisplayName("Shoe Size")]
+        public string ShoeSize { get; set; }
+
         public bool Active { get; set; }
 
         public int? GroupId { get; set; }

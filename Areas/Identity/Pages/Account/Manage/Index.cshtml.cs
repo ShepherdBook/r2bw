@@ -60,6 +60,9 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Apparel Size")]
             public string Size { get; set; }
 
+            [Display(Name = "Shoe Size")]
+            public string ShoeSize { get; set; }
+
             [Display(Name = "Date of Birth")]
             [DataType(DataType.Date)]
             public DateTime DateOfBirth { get; set; }
@@ -87,6 +90,7 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
                 LastName = user.LastName,
                 Sex = user.Sex,
                 Size = user.Size,
+                ShoeSize = user.ShoeSize,
                 DateOfBirth = user.DateOfBirth
             };
 
@@ -151,6 +155,12 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
             if (Input.Size != user.Size)
             {
                 user.Size = Input.Size;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.ShoeSize != user.ShoeSize)
+            {
+                user.ShoeSize = Input.ShoeSize;
                 await _userManager.UpdateAsync(user);
             }
 

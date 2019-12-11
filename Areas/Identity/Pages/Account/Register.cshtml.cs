@@ -81,6 +81,9 @@ namespace r2bw.Areas.Identity.Pages.Account
             [Display(Name = "Size (for apparel sizing only)")]
             public string Size { get; set; }
 
+            [Display(Name = "Shoe Size")]
+            public string ShoeSize { get; set; }
+
             //public Group Group { get; set; }
 
             //public int GroupId { get; set; }
@@ -108,6 +111,7 @@ namespace r2bw.Areas.Identity.Pages.Account
                     LastName = Input.LastName,
                     Sex = Input.Sex,
                     Size = Input.Size,
+                    ShoeSize = Input.ShoeSize,
                     WaiverSignedOn = DateTimeOffset.Now,
                     //GroupId = Input.GroupId,
                     Active = true,
