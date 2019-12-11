@@ -66,6 +66,20 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Date of Birth")]
             [DataType(DataType.Date)]
             public DateTime DateOfBirth { get; set; }
+
+            [Display(Name = "Street")]
+            public string Street1 { get; set; }
+
+            [Display(Name = "")]
+            public string Street2 { get; set; }
+
+            public string City { get; set; }
+
+            [StringLength(2)]
+            public string State { get; set; }
+
+            [StringLength(5)]
+            public string Zip { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -91,7 +105,12 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
                 Sex = user.Sex,
                 Size = user.Size,
                 ShoeSize = user.ShoeSize,
-                DateOfBirth = user.DateOfBirth
+                DateOfBirth = user.DateOfBirth,
+                Street1 = user.Street1,
+                Street2 = user.Street2,
+                City = user.City,
+                State = user.State,
+                Zip = user.Zip
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -167,6 +186,36 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
             if (Input.DateOfBirth != user.DateOfBirth)
             {
                 user.DateOfBirth = Input.DateOfBirth;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.Street1 != user.Street1)
+            {
+                user.Street1 = Input.Street1;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.Street2 != user.Street2)
+            {
+                user.Street2 = Input.Street2;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.City != user.City)
+            {
+                user.City = Input.City;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.State != user.State)
+            {
+                user.State = Input.State;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.Zip != user.Zip)
+            {
+                user.Zip = Input.Zip;
                 await _userManager.UpdateAsync(user);
             }
 

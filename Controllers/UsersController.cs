@@ -107,7 +107,7 @@ namespace r2bw.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,Sex,Size,ShoeSize,DateOfBirth")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,Sex,Size,ShoeSize,DateOfBirth,Street1,Street2,City,State,Zip")] User user)
         {
             if (id != user.Id)
             {
@@ -126,6 +126,11 @@ namespace r2bw.Controllers
                     toUpdate.Sex = user.Sex;
                     toUpdate.Size = user.Size;
                     toUpdate.ShoeSize = user.ShoeSize;
+                    toUpdate.Street1 = user.Street1;
+                    toUpdate.Street2 = user.Street2;
+                    toUpdate.City = user.City;
+                    toUpdate.State = user.State;
+                    toUpdate.Zip = user.Zip;
 
                     _context.Update(toUpdate);
                     await _context.SaveChangesAsync();
