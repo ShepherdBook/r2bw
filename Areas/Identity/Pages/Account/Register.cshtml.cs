@@ -84,6 +84,20 @@ namespace r2bw.Areas.Identity.Pages.Account
             [Display(Name = "Shoe Size")]
             public string ShoeSize { get; set; }
 
+            [Display(Name = "Street")]
+            public string Street1 { get; set; }
+
+            [Display(Name = "")]
+            public string Street2 { get; set; }
+
+            public string City { get; set; }
+
+            [StringLength(2)]
+            public string State { get; set; }
+
+            [StringLength(5)]
+            public string Zip { get; set; }
+
             //public Group Group { get; set; }
 
             //public int GroupId { get; set; }
@@ -113,6 +127,10 @@ namespace r2bw.Areas.Identity.Pages.Account
                     Size = Input.Size,
                     ShoeSize = Input.ShoeSize,
                     WaiverSignedOn = DateTimeOffset.Now,
+                    Street1 = Input.Street1,
+                    Street2 = Input.Street2,
+                    City = Input.City,
+                    Zip = Input.Zip,
                     //GroupId = Input.GroupId,
                     Active = true,
                     SecurityStamp = Guid.NewGuid().ToString()};
