@@ -54,6 +54,10 @@ namespace r2bw.Data
         [StringLength(5)]
         public string Zip { get; set; }
 
+        [DisplayName("Dues Paid on")]
+        [DataType(DataType.Date)]
+        public DateTimeOffset? DuesPaidOn { get; set; }
+
         public bool Active { get; set; }
 
         public int? GroupId { get; set; }

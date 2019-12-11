@@ -23,6 +23,7 @@ namespace r2bw.Services
             Map(u => u.City).Name("City");
             Map(u => u.State).Name("State");
             Map(u => u.Zip).Name("Zip");
+            Map(u => u.DuesPaidOn).Name("DuesPaidOn");
         }
     }
 }

@@ -80,6 +80,10 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
 
             [StringLength(5)]
             public string Zip { get; set; }
+
+            [Display(Name = "Dues Paid on")]
+            [DataType(DataType.Date)]
+            public DateTimeOffset? DuesPaidOn { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -110,7 +114,8 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
                 Street2 = user.Street2,
                 City = user.City,
                 State = user.State,
-                Zip = user.Zip
+                Zip = user.Zip,
+                DuesPaidOn = user.DuesPaidOn
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
