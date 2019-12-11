@@ -17,6 +17,12 @@ namespace r2bw.Services
             Map(u => u.Active).Name("Active");
             Map(u => u.Sex).Name("ApparelSex");
             Map(u => u.Size).Name("ApparelSize");
+            Map(u => u.ShoeSize).Name("ShoeSize");
+            Map(u => u.Street1).Name("Street1");
+            Map(u => u.Street2).Name("Street2");
+            Map(u => u.City).Name("City");
+            Map(u => u.State).Name("State");
+            Map(u => u.Zip).Name("Zip");
         }
     }
 }
