@@ -37,8 +37,7 @@ namespace r2bw.Controllers
         {
             List<User> users = await _context.Users
                 .Where(p => p.Active)
-                .OrderByDescending(p => p.WaiverSignedOn.Date)
-                .ThenBy(p => p.LastName)
+                .OrderBy(p => p.LastName)
                 .ThenBy(p => p.FirstName)
                 .ToListAsync();
 
