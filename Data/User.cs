@@ -48,7 +48,7 @@ namespace r2bw.Data
 
         public string City { get; set; }
 
-        [StringLength(2)]
+        [StringLength(2, ErrorMessage = "State must be two letters")]
         public string State { get; set; }
 
         [StringLength(5)]
