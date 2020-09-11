@@ -52,6 +52,11 @@ namespace r2bw.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [Phone]
+            [Display(Name = "Phone")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
@@ -120,6 +125,7 @@ namespace r2bw.Areas.Identity.Pages.Account
                 var user = new User { 
                     UserName = Input.Email, 
                     Email = Input.Email, 
+                    PhoneNumber = Input.PhoneNumber,
                     FirstName = Input.FirstName, 
                     DateOfBirth = Input.DateOfBirth.Date,
                     LastName = Input.LastName,

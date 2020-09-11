@@ -25,6 +25,7 @@
             @if (User.IsInRole("Administrator"))
             {
                 <th>Email</th>
+                <th>Phone Number</th>
                 <th>Confirmed?</th>
                 <th>Dues Paid?</th>
                 <th></th>
@@ -44,6 +45,9 @@
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.EmailConfirmedText)

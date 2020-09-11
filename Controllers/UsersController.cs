@@ -106,7 +106,7 @@ namespace r2bw.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,Sex,Size,ShoeSize,DateOfBirth,Street1,Street2,City,State,Zip,DuesPaidOn")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,PhoneNumber,Sex,Size,ShoeSize,DateOfBirth,Street1,Street2,City,State,Zip,DuesPaidOn")] User user)
         {
             if (id != user.Id)
             {
@@ -121,6 +121,7 @@ namespace r2bw.Controllers
 
                     toUpdate.FirstName = user.FirstName;
                     toUpdate.LastName = user.LastName;
+                    toUpdate.PhoneNumber = user.PhoneNumber;
                     toUpdate.DateOfBirth = user.DateOfBirth;
                     toUpdate.Sex = user.Sex;
                     toUpdate.Size = user.Size;

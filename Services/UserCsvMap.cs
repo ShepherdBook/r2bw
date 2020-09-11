@@ -10,6 +10,7 @@ namespace r2bw.Services
             Map(u => u.FirstName).Name("FirstName");
             Map(u => u.LastName).Name("LastName");
             Map(u => u.Email).Name("Email");
+            Map(u => u.PhoneNumber).Name("PhoneNumber");
             Map(u => u.UserName).Name("UserName");
             Map(u => u.DateOfBirth).Name("DateOfBirth");
             Map(u => u.WaiverSignedOn).Name("WaiverSignedOn");
