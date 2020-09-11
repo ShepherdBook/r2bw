@@ -51,7 +51,7 @@ namespace r2bw.Areas.Identity.Pages.Account.Manage
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
             [Display(Name = "Apparel Sex")]

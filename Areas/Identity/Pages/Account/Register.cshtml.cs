@@ -53,7 +53,7 @@ namespace r2bw.Areas.Identity.Pages.Account
 
             [Required]
             [Phone]
-            [Display(Name = "Phone")]
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
             [Required]
